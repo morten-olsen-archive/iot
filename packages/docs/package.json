@@ -39,6 +39,7 @@
     "@morten-olsen/iot-initial": "^1.0.0",
     "@morten-olsen/iot-master": "^1.0.0",
     "@morten-olsen/iot-react": "^1.0.0",
+    "@morten-olsen/timewarp": "^1.0.0",
     "@types/color": "^3.0.1",
     "@types/styled-components": "^5.1.4",
     "babel-plugin-i18next-extract": "^0.8.0",
