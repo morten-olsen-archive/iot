@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "strict": true,
+    "declaration": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include":[],
+  "references": [{
+    "path": "packages/iot"
+  }, {
+    "path": "packages/master"
+  }, {
+    "path": "packages/initial"
+  }, {
+    "path": "packages/multiplex"
+  }, {
+    "path": "packages/socket-server"
+  }, {
+    "path": "packages/socket-client"
+  }, {
+    "path": "packages/react"
+  }, {
+    "path": "packages/ui"
+  }]
+}

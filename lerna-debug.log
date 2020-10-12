@@ -1,0 +1,12 @@
+0 silly argv {
+0 silly argv   _: [ 'add' ],
+0 silly argv   scope: '@morten-olsen/iot-docs',
+0 silly argv   globs: [],
+0 silly argv   lernaVersion: '3.22.1',
+0 silly argv   '$0': '/home/alice/work/private/iot/node_modules/.bin/lerna',
+0 silly argv   pkg: '@types/monaco'
+0 silly argv }
+1 notice cli v3.22.1
+2 verbose rootPath /home/alice/work/private/iot
+3 error Error: 404 Not Found - GET https://registry.yarnpkg.com/@types%2fmonaco - Not found
+3 error     at /home/alice/work/private/iot/node_modules/@evocateur/npm-registry-fetch/check-response.js:104:15

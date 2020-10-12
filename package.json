@@ -1,0 +1,27 @@
+{
+  "name": "iot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "postinstall": "lerna bootstrap",
+    "dev:docs": "lerna run --stream --scope=@morten-olsen/iot-docs dev",
+    "build:docs": "lerna run --stream --scope=@morten-olsen/iot-docs build"
+  },
+  "devDependencies": {
+    "@react-native-community/eslint-config": "^2.0.0",
+    "@types/jest": "^26.0.14",
+    "eslint": "^7.11.0",
+    "jest": "^26.4.2",
+    "lerna": "^3.22.1",
+    "nice-try": "^2.0.1",
+    "prettier": "^2.1.2",
+    "ts-jest": "^26.4.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.3"
+  }
+}
