@@ -36,7 +36,8 @@ class Iql {
     }
     const filters = [
       ...this._filters,
-      () => this._changes[this._key]?.current === value,
+      () =>
+        this._changes[this._key] && this._changes[this._key].current === value,
     ];
     return new Iql(this._changes, filters, this._key);
   };
@@ -47,7 +48,8 @@ class Iql {
     }
     const filters = [
       ...this._filters,
-      () => this._changes[this._key]?.previous === value,
+      () =>
+        this._changes[this._key] && this._changes[this._key].previous === value,
     ];
     return new Iql(this._changes, filters, this._key);
   };

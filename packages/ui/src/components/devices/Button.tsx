@@ -18,6 +18,7 @@ const Button: React.FC<Props> = ({ channels }) => {
       name={keys.name!.current as any}
       icon="kebab-horizontal"
       color="green"
+      active={!!keys.pressed?.current}
       onPressIn={() => change({ [channels.pressed]: true })}
       onPressOut={() => change({ [channels.pressed]: false })}
     />

@@ -7,7 +7,7 @@ class Timer {
   private _onRun: (timer: Timer) => void;
 
   constructor(
-    id: number;
+    id: number,
     currentTime: number,
     fn: () => void,
     time: number,

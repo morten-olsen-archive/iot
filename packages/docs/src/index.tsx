@@ -1,4 +1,5 @@
 import { hot } from 'react-hot-loader/root';
+import './examples';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import i18n from 'i18next';

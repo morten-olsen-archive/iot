@@ -40,12 +40,18 @@ const createWebpackConfig = () => {
           loader: 'file-loader',
         },
         {
+          test: /\.ts$/,
+          loader: 'raw-loader',
+          include: [path.join(__dirname, 'src', 'examples', 'src')],
+        },
+        {
           test: /\.(j|t)sx?$/,
           loader: 'babel-loader',
           include: [
             path.join(__dirname, './src'),
             moduleDir('react-native-markdown-display'),
           ],
+          exclude: [path.join(__dirname, 'src', 'examples', 'src')],
           options: {
             sourceType: 'unambiguous',
             presets: [

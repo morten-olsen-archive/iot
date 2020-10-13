@@ -6,8 +6,18 @@ const Markdown: React.FC = ({ children }) => {
   const history = useHistory();
   return (
     <MarkdownDisplay
+      style={{
+        body: {
+          color: '#fff',
+        },
+        code_inline: {
+          backgroundColor: '#000',
+          borderWidth: 0,
+        },
+      }}
       onLinkPress={(url) => {
         history.push(url);
+        return false;
       }}
     >
       {children}

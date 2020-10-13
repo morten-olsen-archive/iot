@@ -5,6 +5,10 @@ class Timewarp {
   private _warp: number = 0;
   private _timers: Timer[] = [];
 
+  constructor(warp: number = 0) {
+    this._warp = warp;
+  }
+
   get time() {
     return new Date().getTime() + this._warp;
   }
@@ -33,7 +37,7 @@ class Timewarp {
       }
       timer = this._timers[0];
     }
-    this._warp = startTime + time;
+    this._warp += time;
     this._timers.forEach((t) => t.warp(this.time));
   };
 

@@ -2,6 +2,11 @@ import Unit, { Changes } from '@morten-olsen/iot';
 
 class DevelopmentUnit extends Unit {
   private _workers: { [name: string]: WorkerUnit } = {};
+  private _timeWarp: number = 0;
+
+  get time() {
+    return new Date(new Date().getTime() + this._timeWarp);
+  }
 
   public createUnit = async (name: string, code: string) => {
     const WorkerUnit = await import('worker-loader!./WorkerUnit');
@@ -13,6 +18,7 @@ class DevelopmentUnit extends Unit {
       type: 'setup',
       code,
       store: this.store,
+      timeWarp: this._timeWarp,
     });
     worker.onmessage = ({ data }: any) => {
       if (data.type === 'change') {
@@ -20,6 +26,13 @@ class DevelopmentUnit extends Unit {
       }
     };
     this._workers[name] = worker;
+  };
+
+  warp = (time: number) => {
+    this._timeWarp += time;
+    Object.values(this._workers).forEach((u) => {
+      u.postMessage({ type: 'warp', time });
+    });
   };
 
   onChange = async (changes: Changes) => {

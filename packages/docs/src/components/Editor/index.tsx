@@ -8,21 +8,22 @@ import React, {
 } from 'react';
 import styled from 'styled-components/native';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import { nanoid } from 'nanoid';
 import MonacoEditor from 'react-monaco-editor';
+import Button from '@morten-olsen/iot-ui/dist/components/Button';
 import DevelopmentContext from '../../context/Development';
 import typings from './typings';
 
 interface Props {
-  code: string;
-  name: string;
+  file: string;
   children?: ReactNode;
+  showTime?: boolean;
 }
 
 const Wrapper = styled.View`
   flex-direction: row;
   background: #fff;
   padding: 25px;
+  background: #212a3d;
 `;
 
 const EditorWrapper = styled.View`
@@ -33,13 +34,17 @@ const Preview = styled.View`
   flex: 1;
 `;
 
-const Editor: React.FC<Props> = ({ name, code, children }) => {
-  const id = useMemo(() => nanoid(), []);
-  const [value, setValue] = useState(code);
+const Editor: React.FC<Props> = ({ file, children, showTime }) => {
+  const model = useMemo(
+    () => monaco.editor.getModel(monaco.Uri.parse(`file:///${file}`))!,
+    [file]
+  );
+  const [code, setCode] = useState('');
   const developmentUnit = useContext(DevelopmentContext);
 
   useEffect(() => {
-    developmentUnit.createUnit(name, code);
+    setCode(model.getValue());
+    developmentUnit.createUnit(file, model.getValue());
   }, []);
 
   const willMount = useCallback((instance: any) => {
@@ -53,10 +58,10 @@ const Editor: React.FC<Props> = ({ name, code, children }) => {
       target: monaco.languages.typescript.ScriptTarget.ES2018,
       allowNonTsExtensions: true,
     });
-    Object.entries(typings).forEach(([file, defs]) => {
+    Object.entries(typings).forEach(([path, defs]) => {
       instance.languages.typescript.typescriptDefaults.addExtraLib(
         defs,
-        `file:///node_modules/@types/${file}`
+        `file:///node_modules/@types/${path}`
       );
     });
   }, []);
@@ -65,35 +70,41 @@ const Editor: React.FC<Props> = ({ name, code, children }) => {
     selectOnLineNumbers: true,
     automaticLayout: true,
     tabSize: 2,
-    model:
-      monaco.editor.getModel(monaco.Uri.parse(`file:///${id}.tsx`)) ||
-      monaco.editor.createModel(
-        code,
-        'typescript',
-        monaco.Uri.parse(`file:///${id}.tsx`)
-      ),
+    model,
   };
 
   return (
     <Wrapper>
       <EditorWrapper>
         <MonacoEditor
-          value={value}
           width={'100%'}
-          height={300}
+          height={400}
           language="typescript"
-          theme="vs-light"
+          theme="vs-dark"
           editorWillMount={willMount}
           options={options}
           onChange={(evt) => {
-            setValue(evt);
+            setCode(evt);
           }}
         />
-        <button onClick={() => developmentUnit.createUnit(name, value)}>
-          Run
-        </button>
+        <Button
+          title="Run"
+          icon="flame"
+          onPress={() => developmentUnit.createUnit(file, code)}
+        />
       </EditorWrapper>
-      {children && <Preview>{children}</Preview>}
+      {children && (
+        <Preview>
+          {showTime && (
+            <Button 
+              title="+1 min"
+              icon="clock"
+              onPress={() => developmentUnit.warp(60 * 1000)}
+            />
+          )}
+          {children}
+        </Preview>
+      )}
     </Wrapper>
   );
 };

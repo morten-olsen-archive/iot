@@ -9,8 +9,6 @@ interface Props {
 
 const Wrapper = styled.View<{ theme: Theme }>`
   flex-direction: row;
-  background: ${({ theme }) => theme.colors.backgroundShade1};
-  border-radius: ${({ theme }) => theme.sizes.corner}px;
 `;
 
 const DeviceGroup: React.FC<Props> = ({ children }) => (

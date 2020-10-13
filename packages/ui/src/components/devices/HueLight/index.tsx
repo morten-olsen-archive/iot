@@ -1,5 +1,4 @@
 import React from 'react';
-import color from 'color';
 import { useKeys, useChange } from '@morten-olsen/iot-react';
 import Device from '../../Device';
 
@@ -11,10 +10,10 @@ interface Props {
 }
 
 const getColor = ({ on, hue, saturation }: any) => {
-  if (!on.current) {
+  if (!on?.current) {
     return '#000';
   }
-  return 'red';
+  return '#fff';
 };
 
 const HueLight: React.FC<Props> = ({ channels }) => {
@@ -25,10 +24,16 @@ const HueLight: React.FC<Props> = ({ channels }) => {
     <Device
       name={keys.name?.current as any}
       icon="light-bulb"
+      active={!!keys.on?.current}
       color={getColor(keys)}
       onPressIn={() => change({ [channels.on]: !keys.on!.current })}
+      onActiveChange={(value) => change({ [channels.on]: value })}
     />
   );
+};
+
+export {
+  Props,
 };
 
 export default HueLight;
