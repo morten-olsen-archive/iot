@@ -1,1 +1,1 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[4],{1049:function(n,r,e){"use strict";e.r(r),r.default=function(){return new Worker(e.p+"WorkerUnit.worker.js")}}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[4],{1050:function(n,e,r){"use strict";r.r(e),e.default=function(){return new Worker(r.p+"WorkerClient.worker.js")}}}]);
