@@ -3,7 +3,12 @@ import { ChangeRequest } from '@morten-olsen/iot';
 
 interface DeviceType {
   name: string;
-  createState: (baseKey: string) => ChangeRequest;
+  config: {
+    name: string;
+    key: string;
+    type: String | Number | Boolean;
+  };
+  createState: (baseKey: string, config: any) => ChangeRequest;
   createChannels: (baseKey: string) => { [name: string]: string };
   component: ReactComponentElement<any, any>;
 }

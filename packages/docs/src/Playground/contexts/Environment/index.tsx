@@ -52,7 +52,10 @@ const EnvironmentProvider: React.FC<ProviderProps> = ({
     () =>
       devices.reduce((output, current) => {
         const deviceType = deviceTypes[current.type];
-        const values = deviceType.createState(current.baseKey);
+        const values = deviceType.createState(
+          current.baseKey,
+          current.config,
+        );
         return { ...output, ...values };
       }, {} as ChangeRequest),
     [devices]

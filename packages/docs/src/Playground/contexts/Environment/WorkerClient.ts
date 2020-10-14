@@ -64,6 +64,7 @@ class WorkerUnit {
   onSetup = async ({ main, files, timeWarp, store }: SetupArgs) => {
     this._time.warp(timeWarp);
     const require = (cwd: string) => (path: string) => {
+      console.log(path, Object.keys(files));
       const module = {
         exports: {} as any,
       };
@@ -78,6 +79,7 @@ class WorkerUnit {
         require: require(cwd),
       };
       const code = files[path];
+      console.log('c', code);
       const transpiled = typescript.transpile(code, {
         target: typescript.ScriptTarget.ES2018,
         module: typescript.ModuleKind.CommonJS,
