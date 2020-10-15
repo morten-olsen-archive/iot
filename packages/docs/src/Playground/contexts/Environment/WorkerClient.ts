@@ -2,6 +2,7 @@ import Unit, { Changes, ChangeRequest, Store } from '@morten-olsen/iot';
 import * as iot from '@morten-olsen/iot';
 import typescript from 'typescript';
 import TimeWarp from '@morten-olsen/timewarp';
+import path from 'path';
 
 interface SetupArgs {
   files: {
@@ -63,23 +64,23 @@ class WorkerUnit {
 
   onSetup = async ({ main, files, timeWarp, store }: SetupArgs) => {
     this._time.warp(timeWarp);
-    const require = (cwd: string) => (path: string) => {
-      console.log(path, Object.keys(files));
+    const require = (cwd: string) => (location: string) => {
       const module = {
         exports: {} as any,
       };
-      if (libs[path]) {
-        return libs[path];
+      if (libs[location]) {
+        return libs[location];
       }
+      const resolvedLocation = path.join('/', cwd, `${location}.ts`);
+      const directory = path.dirname(resolvedLocation);
       const api = {
         setTimeout: this._time.setTimeout,
         clearTimeout: this._time.clearTimeout,
         module,
         exports: module.exports,
-        require: require(cwd),
+        require: require(directory),
       };
-      const code = files[path];
-      console.log('c', code);
+      const code = files[resolvedLocation];
       const transpiled = typescript.transpile(code, {
         target: typescript.ScriptTarget.ES2018,
         module: typescript.ModuleKind.CommonJS,

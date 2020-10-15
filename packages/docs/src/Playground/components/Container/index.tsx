@@ -5,14 +5,12 @@ import Sidebar from '../Sidebar';
 import Store from '../../../components/Store';
 
 const Container = () => {
-  const [selectedDocument, setSelectedDocument] = useState<editor.ITextModel | undefined>(
-    undefined,
-  );
+  const [selectedDocument, setSelectedDocument] = useState<editor.ITextModel | undefined>(undefined);
 
   return (
     <>
       <Sidebar selectDocument={setSelectedDocument} />
-      {selectedDocument && <Editor model={selectedDocument} />}
+      {selectedDocument && <Editor key={selectedDocument.uri.path} model={selectedDocument} />}
       <Store />
     </>
   );

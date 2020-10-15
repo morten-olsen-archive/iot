@@ -3,7 +3,7 @@ import React, {
   useState,
   useCallback,
   useContext,
-  ReactNode
+  ReactNode,
 } from 'react';
 import { editor, Uri } from 'monaco-editor/esm/vs/editor/editor.api';
 import EnvironmentContext from './Environment';
@@ -13,7 +13,7 @@ interface DocumentsContextValue {
   addDocument: (path: string, code: string) => void;
   removeDocument: (path: string) => void;
   compile: () => Promise<void>;
-};
+}
 
 interface EnvironmentProps {
   main: string;
@@ -24,8 +24,7 @@ interface EnvironmentProps {
 const DocumentsContext = createContext<DocumentsContextValue>(undefined as any);
 
 const getModel = (path: string, code: string) => {
-  console.log(path, code);
-  const filePath = `file://${path}`;
+  const filePath = `file:///${path}`;
   const uri = Uri.parse(filePath);
   const currentDocument = editor.getModel(uri);
   if (currentDocument) {

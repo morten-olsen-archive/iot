@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import MonacoEditor from 'react-monaco-editor';
@@ -7,6 +7,22 @@ import typings from './typings';
 interface Props {
   model: monaco.editor.ITextModel;
 }
+monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+  noSemanticValidation: false,
+  noSyntaxValidation: false,
+});
+
+monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+  target: monaco.languages.typescript.ScriptTarget.ES2018,
+  allowNonTsExtensions: true,
+});
+console.log('type', typings);
+Object.entries(typings).forEach(([path, defs]) => {
+  monaco.languages.typescript.typescriptDefaults.addExtraLib(
+    defs,
+    `file:///node_modules/@types/${path}`
+  );
+});
 
 const Wrapper = styled.View`
   flex-direction: row;
@@ -16,24 +32,6 @@ const Wrapper = styled.View`
 `;
 
 const Editor: React.FC<Props> = ({ model }) => {
-  const willMount = useCallback((instance: any) => {
-    instance.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-      noSemanticValidation: false,
-      noSyntaxValidation: false,
-    });
-
-    instance.languages.typescript.typescriptDefaults.setCompilerOptions({
-      target: monaco.languages.typescript.ScriptTarget.ES2018,
-      allowNonTsExtensions: true,
-    });
-    Object.entries(typings).forEach(([path, defs]) => {
-      instance.languages.typescript.typescriptDefaults.addExtraLib(
-        defs,
-        `file:///node_modules/@types/${path}`
-      );
-    });
-  }, []);
-
   const options = {
     selectOnLineNumbers: true,
     automaticLayout: true,
@@ -48,7 +46,6 @@ const Editor: React.FC<Props> = ({ model }) => {
         height={400}
         language="typescript"
         theme="vs-dark"
-        editorWillMount={willMount}
         options={options}
       />
     </Wrapper>

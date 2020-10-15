@@ -8,7 +8,7 @@ import randomColorUnit from '!!raw-loader!../examples/src/RandomColorUnit';
 const Playground: React.FC = () => {
   return (
     <EnvironmentProvider initialDevices={[{ type: 'hueLight', baseKey: 'foo', room: 'test', config: { name: 'ass' } }]}>
-      <DocumentsProvider main="/index.ts" initialDocuments={{'./index.ts': randomColorUnit, './foo.ts': ''}}>
+      <DocumentsProvider main="/foo/bar/index" initialDocuments={{'foo/bar/index.ts': randomColorUnit, 'foo/bar/test.ts': ''}}>
         <Container />
       </DocumentsProvider>
     </EnvironmentProvider>
