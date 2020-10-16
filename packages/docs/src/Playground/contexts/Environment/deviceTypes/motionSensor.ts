@@ -1,8 +1,8 @@
 import DeviceType from '../DeviceType';
-import { HueLight } from '@morten-olsen/iot-ui';
+import { Button } from '@morten-olsen/iot-ui';
 
-const hueLight: DeviceType = {
-  name: 'Philips Hue Light',
+const motionSensor: DeviceType = {
+  name: 'Generic motion sensor',
   config: {
     name: {
       name: 'Name',
@@ -11,13 +11,13 @@ const hueLight: DeviceType = {
   },
   createState: (baseKey, config) => ({
     [`${baseKey}.name`]: config.name,
-    [`${baseKey}.on`]: false,
+    [`${baseKey}.motionDetected`]: false,
   }),
   createChannels: (baseKey) => ({
     name: `${baseKey}.name`,
-    on: `${baseKey}.on`,
+    pressed: `${baseKey}.motionDetected`,
   }),
-  component: HueLight,
+  component: Button,
 };
 
-export default hueLight;
+export default motionSensor;

@@ -6,8 +6,7 @@ interface Props {
   onChange?: (value: boolean) => void;
 }
 
-const Touch = styled.TouchableOpacity`
-`;
+const Touch = styled.TouchableOpacity``;
 
 const Wrapper = styled.View`
   width: 30px;
@@ -26,15 +25,14 @@ const Background = styled.View`
 const Ball = styled.View<{
   enabled?: boolean;
 }>`
-  background: ${({ enabled }) => enabled ? '#1f8efa' : '#72879d'};
+  background: ${({ enabled }) => (enabled ? '#1f8efa' : '#72879d')};
   height: 16px;
   width: 16px;
   border-radius: 8px;
   position: absolute;
   top: 0;
-  ${({ enabled }) => enabled ? 'right: 0;' : ''}
+  ${({ enabled }) => (enabled ? 'right: 0;' : '')}
 `;
-
 
 const Checkbox: React.FC<Props> = ({ value, onChange }) => (
   <Touch onPress={() => onChange && onChange(!value)}>
@@ -45,8 +43,6 @@ const Checkbox: React.FC<Props> = ({ value, onChange }) => (
   </Touch>
 );
 
-export {
-  Props,
-};
+export { Props };
 
 export default Checkbox;

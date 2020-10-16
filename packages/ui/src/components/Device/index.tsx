@@ -20,13 +20,13 @@ const Touch = styled.TouchableOpacity``;
 
 const Wrapper = styled.View<{ theme: Theme }>`
   flex-direction: row;
-  background: #2f3b52;
+  background: ${({ theme }) => theme.colors.backgroundShade1};
   border-radius: 5px;
   width: 250px;
   margin: 10px;
   height: 100px;
   shadow-color: #000;
-  shadow-opacity: .6;
+  shadow-opacity: 0.3;
   shadow-offset: 0;
   shadow-radius: 15px;
 `;
@@ -60,20 +60,20 @@ const Device: React.FC<Props> = ({
 }) => {
   return (
     <Wrapper>
-        <Ear>
-          <Checkbox value={active} onChange={onActiveChange} />
-        </Ear>
-        <Content>
-          <Icon>
-            <Touch onPressIn={onPressIn} onPressOut={onPressOut}>
-              <Octicons name={icon} color={color || '#fff"'} size={40} />
-            </Touch>
-          </Icon>
-          <Lines>
-            <Subtitle1>{name}</Subtitle1>
-            <Subtitle2>Ready to light</Subtitle2>
-          </Lines>
-        </Content>
+      <Ear>
+        <Checkbox value={active} onChange={onActiveChange} />
+      </Ear>
+      <Content>
+        <Icon>
+          <Touch onPressIn={onPressIn} onPressOut={onPressOut}>
+            <Octicons name={icon} color={color || '#fff"'} size={40} />
+          </Touch>
+        </Icon>
+        <Lines>
+          <Subtitle1 numberOfLines={3}>{name}</Subtitle1>
+          <Subtitle2>Ready to light</Subtitle2>
+        </Lines>
+      </Content>
     </Wrapper>
   );
 };

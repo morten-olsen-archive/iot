@@ -7,6 +7,7 @@ import typings from './typings';
 interface Props {
   model: monaco.editor.ITextModel;
 }
+
 monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
   noSemanticValidation: false,
   noSyntaxValidation: false,
@@ -16,7 +17,6 @@ monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
   target: monaco.languages.typescript.ScriptTarget.ES2018,
   allowNonTsExtensions: true,
 });
-console.log('type', typings);
 Object.entries(typings).forEach(([path, defs]) => {
   monaco.languages.typescript.typescriptDefaults.addExtraLib(
     defs,
@@ -26,9 +26,7 @@ Object.entries(typings).forEach(([path, defs]) => {
 
 const Wrapper = styled.View`
   flex-direction: row;
-  background: #fff;
-  padding: 25px;
-  background: #212a3d;
+  height: 100%;
 `;
 
 const Editor: React.FC<Props> = ({ model }) => {
@@ -43,9 +41,9 @@ const Editor: React.FC<Props> = ({ model }) => {
     <Wrapper>
       <MonacoEditor
         width={'100%'}
-        height={400}
+        height={'100%'}
         language="typescript"
-        theme="vs-dark"
+        theme="vs-light"
         options={options}
       />
     </Wrapper>

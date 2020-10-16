@@ -5,9 +5,7 @@ import documents from '../../docs';
 const Document = () => {
   const { name } = useParams();
   const DocumentBody = useMemo(() => documents[name], [name]);
-  return (
-    <>{DocumentBody ? <DocumentBody /> : <div>Not found</div>}</>
-  );
+  return <>{DocumentBody ? <DocumentBody /> : <div>Not found</div>}</>;
 };
 
 export default Document;

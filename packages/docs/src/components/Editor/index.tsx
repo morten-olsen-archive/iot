@@ -96,7 +96,7 @@ const Editor: React.FC<Props> = ({ file, children, showTime }) => {
       {children && (
         <Preview>
           {showTime && (
-            <Button 
+            <Button
               title="+1 min"
               icon="clock"
               onPress={() => developmentUnit.warp(60 * 1000)}

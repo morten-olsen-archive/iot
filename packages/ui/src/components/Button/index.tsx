@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import { Octicons } from '@expo/vector-icons';
-import { LinkText } from '../../typography';
+import { ButtonText } from '../../typography';
 
 interface Props {
   title: string;
@@ -9,8 +9,7 @@ interface Props {
   icon?: string;
 }
 
-const Touch = styled.TouchableOpacity`
-`;
+const Touch = styled.TouchableOpacity``;
 
 const Wrapper = styled.View`
   background: #1f8efa;
@@ -39,7 +38,7 @@ const Button: React.FC<Props> = ({ title, onPress, icon }) => (
         {icon && <Octicons name={icon} color="#fff" size={30} />}
       </IconWrapper>
       <Content>
-        <LinkText>{title}</LinkText>
+        <ButtonText>{title}</ButtonText>
       </Content>
       <IconWrapper />
     </Wrapper>

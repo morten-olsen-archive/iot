@@ -71,7 +71,10 @@ class WorkerUnit {
       if (libs[location]) {
         return libs[location];
       }
-      const resolvedLocation = path.join('/', cwd, `${location}.ts`);
+      if (!location.endsWith('.ts')) {
+        location += '.ts';
+      }
+      const resolvedLocation = path.join('/', cwd, location);
       const directory = path.dirname(resolvedLocation);
       const api = {
         setTimeout: this._time.setTimeout,

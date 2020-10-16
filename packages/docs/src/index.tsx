@@ -1,11 +1,11 @@
 import { hot } from 'react-hot-loader/root';
-import './examples';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import i18n from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { ThemeProvider } from '@morten-olsen/iot-ui';
 import Router from './Router';
+import './files';
 
 const i18nInstance = i18n
   .use(initReactI18next) // bind react-i18next to the instance

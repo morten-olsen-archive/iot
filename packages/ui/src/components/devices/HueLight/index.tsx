@@ -13,7 +13,7 @@ const getColor = ({ on, hue, saturation }: any) => {
   if (!on?.current) {
     return '#000';
   }
-  return '#fff';
+  return 'yellow';
 };
 
 const HueLight: React.FC<Props> = ({ channels }) => {
@@ -32,8 +32,6 @@ const HueLight: React.FC<Props> = ({ channels }) => {
   );
 };
 
-export {
-  Props,
-};
+export { Props };
 
 export default HueLight;

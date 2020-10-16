@@ -2,6 +2,7 @@ import React, {
   createContext,
   useState,
   useCallback,
+  useEffect,
   useContext,
   ReactNode,
 } from 'react';
@@ -10,52 +11,28 @@ import EnvironmentContext from './Environment';
 
 interface DocumentsContextValue {
   documents: editor.ITextModel[];
-  addDocument: (path: string, code: string) => void;
-  removeDocument: (path: string) => void;
   compile: () => Promise<void>;
+  main: string;
+  setMain: (path: string) => void;
 }
 
 interface EnvironmentProps {
   main: string;
-  initialDocuments: { [path: string]: string };
   children: ReactNode;
+  autoRun?: boolean;
 }
 
 const DocumentsContext = createContext<DocumentsContextValue>(undefined as any);
 
-const getModel = (path: string, code: string) => {
-  const filePath = `file:///${path}`;
-  const uri = Uri.parse(filePath);
-  const currentDocument = editor.getModel(uri);
-  if (currentDocument) {
-    return currentDocument;
-  }
-  return editor.createModel(code, 'typescript', Uri.parse(filePath));
-};
-
 const DocumentsProvider: React.FC<EnvironmentProps> = ({
   children,
-  initialDocuments,
   main,
+  autoRun,
 }) => {
   const { compile } = useContext(EnvironmentContext);
+  const [localMain, setLocalMain] = useState(main);
   const [documents, setDocuments] = useState<editor.ITextModel[]>(
-    Object.entries(initialDocuments).map(([path, code]) => getModel(path, code))
-  );
-
-  const addDocument = useCallback((path: string, code: string) => {
-    const model = getModel(path, code);
-    setDocuments((current) => [...current, model]);
-  }, []);
-
-  const removeDocument = useCallback(
-    (path: string) => {
-      const model = documents.find((d) => d.uri.path === path);
-      if (model) {
-        setDocuments((current) => current.filter((c) => c !== model));
-      }
-    },
-    [documents]
+    editor.getModels()
   );
 
   const compileCode = useCallback(async () => {
@@ -66,16 +43,37 @@ const DocumentsProvider: React.FC<EnvironmentProps> = ({
         [path]: current.getValue(),
       };
     }, {} as { [path: string]: string });
-    await compile(code, main);
-  }, [documents, main, compile]);
+    await compile(code, localMain);
+  }, [documents, compile, localMain]);
+
+  useEffect(() => {
+    if (autoRun) {
+      compileCode();
+    }
+  }, [autoRun]);
+
+  useEffect(() => {
+    const createListener = editor.onDidCreateModel((model) => {
+      setDocuments(editor.getModels());
+      console.log('new doc', model.uri.path);
+    });
+    const disposeListener = editor.onWillDisposeModel(() => {
+      setDocuments(editor.getModels());
+    });
+
+    return () => {
+      createListener.dispose();
+      disposeListener.dispose();
+    };
+  }, []);
 
   return (
     <DocumentsContext.Provider
       value={{
         documents,
-        addDocument,
-        removeDocument,
         compile: compileCode,
+        main: localMain,
+        setMain: setLocalMain,
       }}
     >
       {children}

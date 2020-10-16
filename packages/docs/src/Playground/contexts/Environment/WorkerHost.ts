@@ -3,7 +3,11 @@ import Unit, { Changes } from '@morten-olsen/iot';
 class WorkerHost extends Unit {
   private _worker?: Worker;
 
-  compile = async (main: string, files: { [path: string]: string }) => {
+  compile = async (
+    main: string,
+    files: { [path: string]: string },
+    timeWarp: number
+  ) => {
     this.terminate();
     const WorkerClient = await import('worker-loader!./WorkerClient');
     const worker = new WorkerClient.default() as Worker;
@@ -13,6 +17,7 @@ class WorkerHost extends Unit {
         main,
         files,
         store: this.store,
+        timeWarp,
       },
     });
 
@@ -31,6 +36,12 @@ class WorkerHost extends Unit {
   onChange = async (changes: Changes) => {
     if (this._worker) {
       this._worker.postMessage({ type: 'change', payload: changes });
+    }
+  };
+
+  warpTime = (time: number) => {
+    if (this._worker) {
+      this._worker.postMessage({ type: 'warp', payload: time });
     }
   };
 

@@ -2,7 +2,7 @@ import Theme from './Theme';
 
 const light: Theme = {
   sizes: {
-    corner: 20,
+    corner: 3,
     icons: 18,
   },
   paddings: {
