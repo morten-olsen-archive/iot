@@ -17,6 +17,7 @@ const File: React.FC<Props> = ({
   select,
 }) => (
   <Row
+    compact
     left={
       <IconCell
         color={isMain ? '#000' : '#ddd'}

@@ -15,14 +15,14 @@ const Background = styled.View`
   height: 100%;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, .8);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(20px);
 `;
 
 const Content = styled.View`
   background: #fff;
   min-width: 400px;
-  box-shadow: 0 0 135px rgba(0,0,0,.4);
+  box-shadow: 0 0 135px rgba(0, 0, 0, 0.4);
 `;
 
 const createDomElement = () => {
@@ -40,7 +40,9 @@ const Modal: React.FC<Props> = ({ visible, children, title, onClose }) => {
 
   useEffect(() => {
     document.body.appendChild(domElement.current);
-    return () => { domElement.current.remove(); };
+    return () => {
+      domElement.current.remove();
+    };
   }, [domElement]);
 
   useEffect(() => {

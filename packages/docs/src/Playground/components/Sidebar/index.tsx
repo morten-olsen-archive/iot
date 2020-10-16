@@ -37,7 +37,9 @@ const Sidebar: React.FC<Props> = ({
         right={
           <>
             <IconCell name="play-circle" onPress={compile} />
-            {running && <IconCell color="red" name="stop-circle" onPress={stop} />}
+            {running && (
+              <IconCell color="red" name="stop-circle" onPress={stop} />
+            )}
           </>
         }
         title="Files"
@@ -45,14 +47,18 @@ const Sidebar: React.FC<Props> = ({
       />
       <Folder
         files={documents}
-        location="/examples"
+        location={cwd}
         selectedFile={selectedDocument ? selectedDocument.uri.path : ''}
         selectDocument={selectDocument}
         mainFile={main}
         selectMain={setMain}
       />
       <Modal visible={adding} onClose={() => setAdding(false)} title="Add file">
-        <input placeholder="Path" value={addPath} onChange={e => setAddPath(e.target.value)} />
+        <input
+          placeholder="Path"
+          value={addPath}
+          onChange={(e) => setAddPath(e.target.value)}
+        />
         <button onClick={addFile}>Add</button>
       </Modal>
     </>

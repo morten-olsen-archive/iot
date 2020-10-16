@@ -9,13 +9,15 @@ interface Props {
 
 const AddDevice: React.FC<Props> = ({ onAdd }) => {
   const { deviceTypes } = useContext(EnvironmentContext);
-  const [selectedTypeKey, setSelectedTypeKey] = useState<string | undefined>(undefined);
+  const [selectedTypeKey, setSelectedTypeKey] = useState<string | undefined>(
+    undefined
+  );
   const [room, setRoom] = useState('');
   const [baseKey, setBaseKey] = useState('');
   const [config, setConfig] = useState<any>({});
   const selectedType = useMemo(
-    () => selectedTypeKey ? deviceTypes[selectedTypeKey] : undefined,
-    [deviceTypes, selectedTypeKey],
+    () => (selectedTypeKey ? deviceTypes[selectedTypeKey] : undefined),
+    [deviceTypes, selectedTypeKey]
   );
 
   const setConfigValue = useCallback((key: string, value: any) => {
@@ -30,31 +32,56 @@ const AddDevice: React.FC<Props> = ({ onAdd }) => {
       {!selectedType || !selectedTypeKey ? (
         <>
           {Object.entries(deviceTypes).map(([key, type]) => (
-            <Row key={key} title={type.name} onPress={() => setSelectedTypeKey(key)} />
+            <Row
+              key={key}
+              title={type.name}
+              onPress={() => setSelectedTypeKey(key)}
+            />
           ))}
         </>
-      ): ( 
+      ) : (
         <>
           <Row
             title="Base key"
-            right={<input value={baseKey} onChange={(evt) => setBaseKey(evt.target.value)} />}
+            right={
+              <input
+                value={baseKey}
+                onChange={(evt) => setBaseKey(evt.target.value)}
+              />
+            }
           />
           <Row
             title="Room"
-            right={<input value={room} onChange={(evt) => setRoom(evt.target.value)} />}
+            right={
+              <input
+                value={room}
+                onChange={(evt) => setRoom(evt.target.value)}
+              />
+            }
           />
           {Object.entries(selectedType.config).map(([key, configDef]) => (
             <Row
               key={key}
               title={configDef.name}
-              right={<input value={config[key] || ''} onChange={(evt) => setConfigValue(key, evt.target.value)} />}
+              right={
+                <input
+                  value={config[key] || ''}
+                  onChange={(evt) => setConfigValue(key, evt.target.value)}
+                />
+              }
             />
           ))}
-          <button onClick={() => onAdd({ type: selectedTypeKey, baseKey, room, config })}>Add</button>
+          <button
+            onClick={() =>
+              onAdd({ type: selectedTypeKey, baseKey, room, config })
+            }
+          >
+            Add
+          </button>
         </>
       )}
     </>
   );
-}
+};
 
 export default AddDevice;

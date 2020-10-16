@@ -9,6 +9,7 @@ interface Props {
   onPress?: () => void;
   theme: Theme;
   color?: string;
+  size?: number;
 }
 
 const Wrapper = styled(Cell)`
@@ -20,10 +21,10 @@ const Wrapper = styled(Cell)`
 
 const Touch = styled.TouchableOpacity``;
 
-const Icon: React.FC<Props> = ({ name, onPress, theme, color }) => {
+const Icon: React.FC<Props> = ({ name, onPress, theme, color, size }) => {
   const comp = (
     <Wrapper>
-      <Feather name={name} color={color} size={theme.sizes.icons} />
+      <Feather name={name} color={color} size={size || theme.sizes.icons} />
     </Wrapper>
   );
 

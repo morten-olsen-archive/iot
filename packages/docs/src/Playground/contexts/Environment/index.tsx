@@ -103,14 +103,17 @@ const EnvironmentProvider: React.FC<ProviderProps> = ({
     setRunning(false);
   }, [workerHost]);
 
-  const addDevice = useCallback((device: Device) => {
-    const type = deviceTypes[device.type];
-    setDevices((current) => [...current, device]);
-    if (master) {
-      const changes = type.createState(device.baseKey, device.config);
-      master.process(changes);
-    };
-  }, [master]);
+  const addDevice = useCallback(
+    (device: Device) => {
+      const type = deviceTypes[device.type];
+      setDevices((current) => [...current, device]);
+      if (master) {
+        const changes = type.createState(device.baseKey, device.config);
+        master.process(changes);
+      }
+    },
+    [master]
+  );
 
   const replaceDevice = useCallback((index: number, device: Device) => {
     setDevices((current) => {

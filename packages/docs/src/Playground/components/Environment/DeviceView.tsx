@@ -45,14 +45,21 @@ const Environment: React.FC<Props> = ({ onlyBaseKeys }) => {
     [devices, deviceTypes, onlyBaseKeys]
   );
 
-  const onAdd = useCallback((device: Device) => {
-    addDevice(device);
-    setAdding(false);
-  }, [addDevice]);
+  const onAdd = useCallback(
+    (device: Device) => {
+      addDevice(device);
+      setAdding(false);
+    },
+    [addDevice]
+  );
 
   return (
     <Scroll>
-      <Modal title="Add Device" visible={adding} onClose={() => setAdding(false)}>
+      <Modal
+        title="Add Device"
+        visible={adding}
+        onClose={() => setAdding(false)}
+      >
         <AddDevice onAdd={onAdd} />
       </Modal>
       <Wrapper>
@@ -67,7 +74,11 @@ const Environment: React.FC<Props> = ({ onlyBaseKeys }) => {
           </RoomWrapper>
         ))}
       </Wrapper>
-      <Row title="Add device" left={<IconCell name="plus-circle" />} onPress={() => setAdding(true)} />
+      <Row
+        title="Add device"
+        left={<IconCell name="plus-circle" />}
+        onPress={() => setAdding(true)}
+      />
     </Scroll>
   );
 };

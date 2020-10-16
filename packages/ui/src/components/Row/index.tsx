@@ -17,6 +17,7 @@ interface Props {
   children?: ReactNode;
   selected?: boolean;
   background?: boolean;
+  compact?: boolean;
 }
 
 const Unread = styled.View`
@@ -32,8 +33,11 @@ const Touch = styled.TouchableOpacity``;
 const Wrapper = styled(Cell)<{
   selected?: boolean;
   theme: Theme;
+  compact?: boolean;
 }>`
   flex-direction: row;
+  ${({ compact }) => (compact ? 'padding-top: 0;' : '')}
+  ${({ compact }) => (compact ? 'padding-bottom: 0;' : '')}
   border-radius: ${({ theme }) => theme.sizes.corner}px;
   background: ${({ theme, selected }) =>
     selected ? theme.colors.backgroundSelected : 'transparent'};
@@ -55,9 +59,10 @@ const Row: React.FC<Props> = ({
   background,
   unread,
   selected,
+  compact,
 }) => {
   const comp = (
-    <Wrapper background={background} selected={selected}>
+    <Wrapper background={background} selected={selected} compact={!!compact}>
       {unread && <Unread />}
       {left}
       <Main>

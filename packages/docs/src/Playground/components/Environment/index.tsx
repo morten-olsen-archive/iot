@@ -13,7 +13,7 @@ const TabBar = styled.View`
 const views = {
   devices: {
     name: 'Devices',
-    icon:'grid',
+    icon: 'grid',
     component: DeviceView,
   },
   store: {
@@ -33,12 +33,16 @@ const Environment = () => {
         {Object.entries(views).map(([key, view]) => (
           <Row
             left={<IconCell name={view.icon} />}
-            key={key} title={view.name} onPress={() => setCurrentView(key)} selected={key===currentView} />
+            key={key}
+            title={view.name}
+            onPress={() => setCurrentView(key)}
+            selected={key === currentView}
+          />
         ))}
       </TabBar>
       <View />
     </>
   );
-}
+};
 
 export default Environment;
