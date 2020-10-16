@@ -6,13 +6,13 @@ import React, {
   useContext,
   ReactNode,
 } from 'react';
-import { editor, Uri } from 'monaco-editor/esm/vs/editor/editor.api';
+import { editor } from 'monaco-editor/esm/vs/editor/editor.api';
 import EnvironmentContext from './Environment';
 
 interface DocumentsContextValue {
   documents: editor.ITextModel[];
-  compile: () => Promise<void>;
-  main: string;
+  compile: (mainFile?: string) => Promise<void>;
+  main?: string;
   setMain: (path: string) => void;
 }
 
@@ -35,22 +35,33 @@ const DocumentsProvider: React.FC<EnvironmentProps> = ({
     editor.getModels()
   );
 
-  const compileCode = useCallback(async () => {
-    const code = documents.reduce((output, current) => {
-      const path = current.uri.path;
-      return {
-        ...output,
-        [path]: current.getValue(),
-      };
-    }, {} as { [path: string]: string });
-    await compile(code, localMain);
-  }, [documents, compile, localMain]);
+  const compileCode = useCallback(
+    async (mainFile?: string) => {
+      if (!localMain && !mainFile) {
+        return;
+      }
+      const code = documents.reduce((output, current) => {
+        const path = current.uri.path;
+        return {
+          ...output,
+          [path]: current.getValue(),
+        };
+      }, {} as { [path: string]: string });
+      await compile(code, mainFile || localMain);
+    },
+    [documents, compile, localMain]
+  );
+
+  const setMain = useCallback((newMain: string) => {
+    setLocalMain(newMain);
+    compileCode(newMain);
+  }, [compile]);
 
   useEffect(() => {
     if (autoRun) {
       compileCode();
     }
-  }, [autoRun]);
+  }, [autoRun, compileCode]);
 
   useEffect(() => {
     const createListener = editor.onDidCreateModel((model) => {
@@ -73,7 +84,7 @@ const DocumentsProvider: React.FC<EnvironmentProps> = ({
         documents,
         compile: compileCode,
         main: localMain,
-        setMain: setLocalMain,
+        setMain: setMain,
       }}
     >
       {children}

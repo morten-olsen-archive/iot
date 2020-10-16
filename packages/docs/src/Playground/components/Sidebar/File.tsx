@@ -4,9 +4,11 @@ import { Row, IconCell } from '@morten-olsen/iot-ui';
 interface Props {
   name: string;
   isSelected: boolean;
+  isRunning: boolean;
   isMain: boolean;
   makeMain: () => void;
   select: () => void;
+  stop: () => void;
 }
 
 const File: React.FC<Props> = ({
@@ -15,14 +17,16 @@ const File: React.FC<Props> = ({
   isSelected,
   makeMain,
   select,
+  stop,
+  isRunning,
 }) => (
   <Row
     compact
     left={
       <IconCell
-        color={isMain ? '#000' : '#ddd'}
-        name="play-circle"
-        onPress={makeMain}
+        color={isRunning ? 'red' : '#ddd'}
+        name={!isRunning ? "play-circle" : "stop-circle"}
+        onPress={!isRunning ? makeMain : stop}
       />
     }
     title={name}

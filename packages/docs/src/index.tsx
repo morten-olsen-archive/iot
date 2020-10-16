@@ -1,11 +1,35 @@
 import { hot } from 'react-hot-loader/root';
 import React from 'react';
+import { createGlobalStyle } from 'styled-components';
 import ReactDOM from 'react-dom';
 import i18n from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { ThemeProvider } from '@morten-olsen/iot-ui';
 import Router from './Router';
 import './files';
+
+const font = document.createElement('link');
+font.rel = 'stylesheet';
+font.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;600&family=Source+Code+Pro&display=swap';
+document.head.appendChild(font);
+
+const GlobalStyles = createGlobalStyle`
+  * {
+    box-sizing: border-box;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 100;
+  }
+  code {
+    font-family: 'Source Code Pro', monospace;
+  }
+  body {
+    font-family: 'Montserrat', sans-serif;
+  }
+  html, body {
+    height: 100%;
+  }
+`;
 
 const i18nInstance = i18n
   .use(initReactI18next) // bind react-i18next to the instance
@@ -34,6 +58,7 @@ const i18nInstance = i18n
 const App = () => (
   <I18nextProvider i18n={i18nInstance}>
     <ThemeProvider>
+      <GlobalStyles />
       <Router />
     </ThemeProvider>
   </I18nextProvider>

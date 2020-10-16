@@ -33,7 +33,7 @@ const devices = [
 const Playground: React.FC = () => {
   return (
     <EnvironmentProvider initialDevices={devices}>
-      <DocumentsProvider autoRun main="/examples/RandomColorUnit.ts">
+      <DocumentsProvider main="/examples/RandomColorUnit.ts">
         <Container cwd="/examples" />
       </DocumentsProvider>
     </EnvironmentProvider>

@@ -2,9 +2,25 @@ import { Configuration } from 'webpack';
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MonacoWebpackPlugin from 'monaco-editor-webpack-plugin';
+const remarkReact = require('remark-react');
 
 const moduleDir = (pkg: string) =>
   path.dirname(require.resolve(path.join(pkg, 'package.json')));
+
+const babelConfig = {
+  sourceType: 'unambiguous',
+  presets: [
+    '@babel/preset-env',
+    '@babel/preset-react',
+    '@babel/preset-typescript',
+  ],
+  plugins: [
+    '@babel/plugin-transform-runtime',
+    '@babel/plugin-proposal-class-properties',
+    'react-hot-loader/babel',
+    'babel-plugin-i18next-extract',
+  ],
+};
 
 const createWebpackConfig = () => {
   const dev = process.env.NODE_ENV !== 'production';
@@ -36,6 +52,21 @@ const createWebpackConfig = () => {
           use: ['style-loader', 'css-loader'],
         },
         {
+          test: /\.mdx$/,
+          use: [
+            {
+              loader: 'babel-loader',
+              options: babelConfig,
+            },
+            {
+              loader: '@mdx-js/loader',
+              options: {
+                remarkPlugins: [remarkReact],
+              },
+            },
+          ],
+        },
+        {
           test: /\.ttf$/,
           loader: 'file-loader',
         },
@@ -52,20 +83,7 @@ const createWebpackConfig = () => {
             moduleDir('react-native-markdown-display'),
           ],
           exclude: [path.join(__dirname, 'src', 'files', 'src')],
-          options: {
-            sourceType: 'unambiguous',
-            presets: [
-              '@babel/preset-env',
-              '@babel/preset-react',
-              '@babel/preset-typescript',
-            ],
-            plugins: [
-              '@babel/plugin-transform-runtime',
-              '@babel/plugin-proposal-class-properties',
-              'react-hot-loader/babel',
-              'babel-plugin-i18next-extract',
-            ],
-          },
+          options: babelConfig,
         },
       ],
     },

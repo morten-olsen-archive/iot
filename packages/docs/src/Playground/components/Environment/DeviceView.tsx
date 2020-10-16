@@ -7,6 +7,8 @@ import Device from '../../contexts/Environment/Device';
 
 interface Props {
   onlyBaseKeys?: string[];
+  allowModifications?: boolean;
+  showRooms?: boolean;
 }
 
 const Scroll = styled.ScrollView`
@@ -22,7 +24,7 @@ const RoomElements = styled.View`
   flex-wrap: wrap;
 `;
 
-const Environment: React.FC<Props> = ({ onlyBaseKeys }) => {
+const Environment: React.FC<Props> = ({ onlyBaseKeys, allowModifications, showRooms }) => {
   const [adding, setAdding] = useState(false);
   const { devices, deviceTypes, addDevice } = useContext(EnvironmentContext);
   const preparedDevices = useMemo(
@@ -65,20 +67,24 @@ const Environment: React.FC<Props> = ({ onlyBaseKeys }) => {
       <Wrapper>
         {Object.entries(preparedDevices).map(([roomName, deviceElements]) => (
           <RoomWrapper>
-            <Row>
-              <H5>{roomName}</H5>
-            </Row>
+            {showRooms && (
+              <Row>
+                <H5>{roomName}</H5>
+              </Row>
+            )}
             <Row>
               <RoomElements>{deviceElements}</RoomElements>
             </Row>
           </RoomWrapper>
         ))}
       </Wrapper>
-      <Row
-        title="Add device"
-        left={<IconCell name="plus-circle" />}
-        onPress={() => setAdding(true)}
-      />
+      {allowModifications && (
+        <Row
+          title="Add device"
+          left={<IconCell name="plus-circle" />}
+          onPress={() => setAdding(true)}
+        />
+      )}
     </Scroll>
   );
 };

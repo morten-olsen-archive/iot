@@ -9,16 +9,20 @@ interface Props {
   files: editor.ITextModel[];
   selectedFile: string;
   mainFile: string;
+  runningFile: string | undefined;
   selectDocument: (document: editor.ITextModel) => void;
   selectMain: (path: string) => void;
+  stop: (path: string) => void;
 }
 
 interface FolderProps {
   branch: Branch;
   selectedFile: string;
   mainFile: string;
+  runningFile: string | undefined;
   selectDocument: (document: editor.ITextModel) => void;
   selectMain: (path: string) => void;
+  stop: (path: string) => void;
 }
 
 interface Branch {
@@ -80,8 +84,10 @@ const Folder: React.FC<FolderProps> = ({
   branch,
   selectedFile,
   mainFile,
+  runningFile,
   selectDocument,
   selectMain,
+  stop,
 }) => {
   const [visible, setVisible] = useState(true);
   return (
@@ -98,7 +104,9 @@ const Folder: React.FC<FolderProps> = ({
             <File
               name={file.name}
               isMain={file.path === mainFile}
+              isRunning={file.path === runningFile}
               isSelected={file.path === selectedFile}
+              stop={() => stop(file.path)}
               key={file.path}
               select={() => selectDocument(file.model)}
               makeMain={() => selectMain(file.path)}
@@ -107,9 +115,11 @@ const Folder: React.FC<FolderProps> = ({
           {Object.values(branch.directories).map((dir) => (
             <Folder
               key={dir.name}
+              stop={stop}
               selectDocument={selectDocument}
               branch={dir}
               selectedFile={selectedFile}
+              runningFile={runningFile}
               mainFile={mainFile}
               selectMain={selectMain}
             />
@@ -126,7 +136,9 @@ const Tree: React.FC<Props> = ({
   selectedFile,
   mainFile,
   selectDocument,
+  runningFile,
   selectMain,
+  stop,
 }) => {
   const tree = useMemo(() => buildTree(files), [files]);
   const branch = useMemo(() => cd(location, tree), [tree, location]);
@@ -140,6 +152,8 @@ const Tree: React.FC<Props> = ({
         mainFile={mainFile}
         selectDocument={selectDocument}
         selectMain={selectMain}
+        runningFile={runningFile}
+        stop={stop}
       />
     </>
   );

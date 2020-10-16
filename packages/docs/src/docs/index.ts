@@ -1,7 +1,7 @@
-const context = (require as any).context('.', true, /\/.*\/index.tsx$/);
+const context = (require as any).context('.', true, /.mdx$/);
 
 const getName = (input: string) => {
-  return input.substring(2).slice(0, -10).toLowerCase();
+  return input.substring(2).toLowerCase();
 };
 
 const docs = context.keys().reduce(

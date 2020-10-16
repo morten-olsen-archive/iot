@@ -15,17 +15,20 @@ const views = {
     name: 'Devices',
     icon: 'grid',
     component: DeviceView,
+    props: { showRooms: true, allowModifications: true },
   },
   store: {
     name: 'Store',
     icon: 'activity',
     component: StoreView,
+    props: {},
   },
 };
 
 const Environment = () => {
   const [currentView, setCurrentView] = useState<keyof typeof views>('devices');
   const View = views[currentView].component;
+  const props = views[currentView].props;
 
   return (
     <>
@@ -35,12 +38,12 @@ const Environment = () => {
             left={<IconCell name={view.icon} />}
             key={key}
             title={view.name}
-            onPress={() => setCurrentView(key)}
+            onPress={() => setCurrentView(key as any)}
             selected={key === currentView}
           />
         ))}
       </TabBar>
-      <View />
+      <View {...props} />
     </>
   );
 };

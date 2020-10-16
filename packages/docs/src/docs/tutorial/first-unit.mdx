@@ -1,0 +1,27 @@
+import { Devices, Preview } from '../components';
+
+# Creating you first automation
+
+Every integration into our home is a `Unit`in `@morten-olsen/iot`, so lets start by creating our first one.
+
+The `Unit` we will be creating is a rather simple one, which reacts to presses on the on and off buttons in the living room
+
+<Devices onlyBaseKeys={['buttons.0', 'buttons.1']} />
+
+And use those events to turn "Light 1" on and off. You can try to press the "..." to confirm that the buttons indeed does nothing right now.
+
+<Devices onlyBaseKeys={['lights.0']} />
+
+## The code
+
+So lets start to look at the code to make those buttons work
+
+<Preview file="/examples/OnOffButtonUnit.ts" />
+
+Press the "play" button on the top left of the example to start the unit, then you can try clicking the "..." on the buttons. The light should toggle on and off.
+
+So the first thing we need to do is to `export default` a class which extends `Unit`. A `Unit` can implement an `onChange` function, which are the one we want to use to react to our button presses.
+
+Our `onChange` function are passed two arguments, `change` which contains all the keys that changed, what they changed from and what they changed to. We also get an `iql` object named `key`.
+
+`Iql` is `internet-of-things-query-language` and is a very simple query builder for querying a state change. in our case we have two checks using the `key(theKey).became(expectedValue).$` to test if `button.0` or `button.1` where pressed. If they where we use `this.change({ someKey, newValue })` to update the on state of our light.

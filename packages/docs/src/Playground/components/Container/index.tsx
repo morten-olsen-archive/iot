@@ -12,19 +12,25 @@ interface Props {
 
 const Wrapper = styled.View`
   flex-direction: row;
-  height: 100vh;
+  flex: 1;
 `;
 
 const SidebarWrapper = styled.View`
   width: 250px;
+  height: 100%;
+  overflow: hidden;
 `;
 
 const EditorWrapper = styled.View`
   flex: 1;
+  height: 100%;
+  overflow: hidden;
 `;
 
 const PreviewWrapper = styled.View`
   flex: 1;
+  height: 100%;
+  overflow: hidden;
 `;
 
 const Container: React.FC<Props> = ({ cwd }) => {

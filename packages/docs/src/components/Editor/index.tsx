@@ -48,22 +48,6 @@ const Editor: React.FC<Props> = ({ file, children, showTime }) => {
   }, []);
 
   const willMount = useCallback((instance: any) => {
-    instance.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-      noSemanticValidation: false,
-      noSyntaxValidation: false,
-    });
-
-    // compiler options
-    instance.languages.typescript.typescriptDefaults.setCompilerOptions({
-      target: monaco.languages.typescript.ScriptTarget.ES2018,
-      allowNonTsExtensions: true,
-    });
-    Object.entries(typings).forEach(([path, defs]) => {
-      instance.languages.typescript.typescriptDefaults.addExtraLib(
-        defs,
-        `file:///node_modules/@types/${path}`
-      );
-    });
   }, []);
 
   const options = {

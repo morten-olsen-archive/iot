@@ -20,7 +20,7 @@ import motionSensor from './deviceTypes/motionSensor';
 
 interface EnvironmentContextValue {
   ready: boolean;
-  running: boolean;
+  running?: string;
   deviceTypes: { [name: string]: DeviceType };
   devices: Device[];
   addDevice: (device: Device) => void;
@@ -56,7 +56,7 @@ const EnvironmentProvider: React.FC<ProviderProps> = ({
 }) => {
   const [ready, setReady] = useState(false);
   const [timeWarp, setTimeWarp] = useState(0);
-  const [running, setRunning] = useState(false);
+  const [running, setRunning] = useState<string | undefined>(undefined);
   const [devices, setDevices] = useState<Device[]>(initialDevices);
   const [master, setMaster] = useState<Master | undefined>(undefined);
   const initialState = useMemo(
@@ -84,7 +84,7 @@ const EnvironmentProvider: React.FC<ProviderProps> = ({
 
   const compile = useCallback(
     async (documents: { [path: string]: string }, main: string) => {
-      setRunning(true);
+      setRunning(main);
       await workerHost.compile(main, documents, timeWarp);
     },
     [workerHost, timeWarp]
@@ -100,7 +100,7 @@ const EnvironmentProvider: React.FC<ProviderProps> = ({
 
   const stop = useCallback(() => {
     workerHost.terminate();
-    setRunning(false);
+    setRunning(undefined);
   }, [workerHost]);
 
   const addDevice = useCallback(
