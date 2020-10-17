@@ -6,11 +6,13 @@ import i18n from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { ThemeProvider } from '@morten-olsen/iot-ui';
 import Router from './Router';
-import './files';
+import { FilesProvider } from './context/FilesContext';
+import { ModelsProvider } from './context/ModelsContext';
 
 const font = document.createElement('link');
 font.rel = 'stylesheet';
-font.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;600&family=Source+Code+Pro&display=swap';
+font.href =
+  'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;600&family=Source+Code+Pro&display=swap';
 document.head.appendChild(font);
 
 const GlobalStyles = createGlobalStyle`
@@ -59,11 +61,21 @@ const App = () => (
   <I18nextProvider i18n={i18nInstance}>
     <ThemeProvider>
       <GlobalStyles />
-      <Router />
+      <ModelsProvider>
+        <FilesProvider>
+          <Router />
+        </FilesProvider>
+      </ModelsProvider>
     </ThemeProvider>
   </I18nextProvider>
 );
 
 const HotApp = hot(App);
 
-ReactDOM.render(<HotApp />, document.body);
+const root = document.getElementById('root') || document.createElement('div');
+root.id = 'root';
+root.style.width = '100%';
+root.style.height = '100%';
+document.body.appendChild(root);
+
+ReactDOM.render(<HotApp />, root);

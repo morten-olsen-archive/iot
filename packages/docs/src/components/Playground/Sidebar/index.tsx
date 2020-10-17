@@ -1,23 +1,17 @@
 import React, { useContext, useState, useCallback } from 'react';
 import { editor, Uri } from 'monaco-editor/esm/vs/editor/editor.api';
-import DocumentsContext from '../../contexts/Documents';
-import EnvironmentContext from '../../contexts/Environment';
+import { useModels } from '../../../hooks/models';
 import { Modal, Row, IconCell } from '@morten-olsen/iot-ui';
 import Folder from './Folder';
 
 interface Props {
-  selectedDocument?: editor.ITextModel;
-  selectDocument: (document: editor.ITextModel) => void;
+  selectedModel?: editor.ITextModel;
+  selectModel: (model: editor.ITextModel) => void;
   cwd: string;
 }
 
-const Sidebar: React.FC<Props> = ({
-  selectedDocument,
-  selectDocument,
-  cwd,
-}) => {
-  const { stop, running } = useContext(EnvironmentContext);
-  const { main, setMain, documents, compile } = useContext(DocumentsContext);
+const Sidebar: React.FC<Props> = ({ selectedModel, selectModel, cwd }) => {
+  const models = useModels();
   const [adding, setAdding] = useState(false);
   const [addPath, setAddPath] = useState(cwd + '/');
 
@@ -38,14 +32,10 @@ const Sidebar: React.FC<Props> = ({
         description={cwd}
       />
       <Folder
-        files={documents}
+        models={models}
         location={cwd}
-        selectedFile={selectedDocument ? selectedDocument.uri.path : ''}
-        selectDocument={selectDocument}
-        mainFile={main || ''}
-        runningFile={running}
-        selectMain={setMain}
-        stop={stop}
+        selectedModel={selectedModel}
+        selectModel={selectModel}
       />
       <Modal visible={adding} onClose={() => setAdding(false)} title="Add file">
         <input

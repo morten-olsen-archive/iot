@@ -1,9 +1,15 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import { Row, IconCell } from '@morten-olsen/iot-ui';
-import { HashRouter as Router, Route, Switch, useRouteMatch, useHistory, Redirect } from 'react-router-dom';
-import { EnvironmentProvider } from '../Playground/contexts/Environment';
-import { DocumentsProvider } from '../Playground/contexts/Documents';
+import {
+  HashRouter as Router,
+  Route,
+  Switch,
+  useRouteMatch,
+  useHistory,
+  Redirect,
+} from 'react-router-dom';
+import { EnvironmentProvider } from '../context/EnvironmentContext';
 
 const Top = styled.View`
   flex-direction: row;
@@ -41,7 +47,7 @@ const devices = [
   },
 ];
 
-import Playground from '../Playground';
+import Playground from '../pages/Playground';
 import Document from '../pages/Document';
 
 const DocumentRoute: React.FC = () => {
@@ -49,11 +55,9 @@ const DocumentRoute: React.FC = () => {
 
   return (
     <EnvironmentProvider initialDevices={devices}>
-      <DocumentsProvider>
-        <Route path={`${path}/:name*`}>
-          <Document />
-        </Route>
-      </DocumentsProvider>
+      <Route path={`${path}/:name*`}>
+        <Document />
+      </Route>
     </EnvironmentProvider>
   );
 };
@@ -62,7 +66,10 @@ const TopBar = () => {
   const history = useHistory();
   return (
     <Top>
-      <Row title="Getting started" onPress={() => history.push('/document/tutorial/gettin-started.mdx')} />
+      <Row
+        title="Getting started"
+        onPress={() => history.push('/document/tutorial/gettin-started.mdx')}
+      />
       <Row title="Playground" onPress={() => history.push('/playground')} />
     </Top>
   );

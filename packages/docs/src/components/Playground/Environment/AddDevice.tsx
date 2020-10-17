@@ -1,14 +1,14 @@
-import React, { useState, useMemo, useContext, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { Row } from '@morten-olsen/iot-ui';
-import EnvironmentContext from '../../contexts/Environment';
-import Device from '../../contexts/Environment/Device';
+import { useEnvironment } from '../../../hooks/environment';
+import Device from '../../../context/Environment/Device';
 
 interface Props {
   onAdd: (device: Device) => void;
 }
 
 const AddDevice: React.FC<Props> = ({ onAdd }) => {
-  const { deviceTypes } = useContext(EnvironmentContext);
+  const { deviceTypes } = useEnvironment();
   const [selectedTypeKey, setSelectedTypeKey] = useState<string | undefined>(
     undefined
   );
@@ -21,7 +21,7 @@ const AddDevice: React.FC<Props> = ({ onAdd }) => {
   );
 
   const setConfigValue = useCallback((key: string, value: any) => {
-    setConfig((current) => ({
+    setConfig((current: any) => ({
       ...current,
       [key]: value,
     }));
