@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   margin: auto;
   max-width: 900px;
   width: 100%;
-  box-shadow: 0px 10px 200px 0px rgba(0,0,0,0.3);
+  box-shadow: 0px 10px 200px 0px rgba(0, 0, 0, 0.3);
 
   code {
     color: red;
@@ -20,9 +20,7 @@ const Document = () => {
   const { name } = useParams();
   const DocumentBody = useMemo(() => documents[name], [name]);
   return (
-    <Wrapper>
-      {DocumentBody ? <DocumentBody /> : <div>Not found</div>}
-    </Wrapper>
+    <Wrapper>{DocumentBody ? <DocumentBody /> : <div>Not found</div>}</Wrapper>
   );
 };
 

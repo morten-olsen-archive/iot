@@ -5,6 +5,7 @@ import React, {
   useMemo,
   ReactNode,
 } from 'react';
+import { useFileSystem } from '../../hooks/filesystem';
 import Unit, { ChangeRequest } from '@morten-olsen/iot';
 import { UnitProvider } from '@morten-olsen/iot-react';
 import Initial from '@morten-olsen/iot-initial';
@@ -28,10 +29,7 @@ interface EnvironmentContextValue {
   timeWarp: number;
   warpTime: (amount: number) => void;
   removeDevice: (index: number) => void;
-  compile: (
-    documents: { [path: string]: string },
-    main: string
-  ) => Promise<void>;
+  compile: (main: string) => Promise<void>;
   stop: () => void;
 }
 
@@ -54,6 +52,7 @@ const EnvironmentProvider: React.FC<ProviderProps> = ({
   initialDevices = [],
   children,
 }) => {
+  const fileSystem = useFileSystem();
   const [ready, setReady] = useState(false);
   const [timeWarp, setTimeWarp] = useState(0);
   const [running, setRunning] = useState<string | undefined>(undefined);
@@ -83,11 +82,12 @@ const EnvironmentProvider: React.FC<ProviderProps> = ({
   );
 
   const compile = useCallback(
-    async (documents: { [path: string]: string }, main: string) => {
-      setRunning(main);
-      await workerHost.compile(main, documents, timeWarp);
+    async (location: string) => {
+      const files = fileSystem.getFiles();
+      setRunning(location);
+      await workerHost.compile(location, files, timeWarp);
     },
-    [workerHost, timeWarp]
+    [workerHost, timeWarp, fileSystem]
   );
 
   const warpTime = useCallback(
@@ -154,6 +154,6 @@ const EnvironmentProvider: React.FC<ProviderProps> = ({
   );
 };
 
-export { EnvironmentProvider };
+export { EnvironmentProvider, EnvironmentContextValue };
 
 export default EnvironmentContext;

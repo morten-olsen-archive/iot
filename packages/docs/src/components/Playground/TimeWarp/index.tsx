@@ -1,10 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, IconCell } from '@morten-olsen/iot-ui';
-import EnvironmentContext from '../../contexts/Environment';
+import { useEnvironment } from '../../../hooks/environment';
 import WarpButton from './WarpButton';
 
 const TimeWarp: React.FC = () => {
-  const { timeWarp } = useContext(EnvironmentContext);
+  const { timeWarp } = useEnvironment();
   const [time, setTime] = useState(new Date(new Date().getTime() + timeWarp));
 
   useEffect(() => {

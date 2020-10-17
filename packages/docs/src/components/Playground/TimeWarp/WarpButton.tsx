@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
 import { ButtonText, Cell } from '@morten-olsen/iot-ui';
-import EnvironmentContext from '../../contexts/Environment';
+import { useEnvironment } from '../../../hooks/environment';
 
 interface Props {
   amount: number;
@@ -11,7 +11,7 @@ interface Props {
 const Touch = styled.TouchableOpacity``;
 
 const WarpButton: React.FC<Props> = ({ label, amount }) => {
-  const { warpTime } = useContext(EnvironmentContext);
+  const { warpTime } = useEnvironment();
 
   return (
     <Touch onPress={() => warpTime(amount)}>

@@ -1,9 +1,9 @@
-import React, { useContext, useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import styled from 'styled-components/native';
 import { H5, Modal, Row, IconCell } from '@morten-olsen/iot-ui';
-import EnvironmentContext from '../../contexts/Environment';
+import { useEnvironment } from '../../../hooks/environment';
+import Device from '../../../context/Environment/Device';
 import AddDevice from './AddDevice';
-import Device from '../../contexts/Environment/Device';
 
 interface Props {
   onlyBaseKeys?: string[];
@@ -24,9 +24,13 @@ const RoomElements = styled.View`
   flex-wrap: wrap;
 `;
 
-const Environment: React.FC<Props> = ({ onlyBaseKeys, allowModifications, showRooms }) => {
+const Environment: React.FC<Props> = ({
+  onlyBaseKeys,
+  allowModifications,
+  showRooms,
+}) => {
   const [adding, setAdding] = useState(false);
-  const { devices, deviceTypes, addDevice } = useContext(EnvironmentContext);
+  const { devices, deviceTypes, addDevice } = useEnvironment();
   const preparedDevices = useMemo(
     () =>
       devices
@@ -66,7 +70,7 @@ const Environment: React.FC<Props> = ({ onlyBaseKeys, allowModifications, showRo
       </Modal>
       <Wrapper>
         {Object.entries(preparedDevices).map(([roomName, deviceElements]) => (
-          <RoomWrapper>
+          <RoomWrapper key={roomName}>
             {showRooms && (
               <Row>
                 <H5>{roomName}</H5>

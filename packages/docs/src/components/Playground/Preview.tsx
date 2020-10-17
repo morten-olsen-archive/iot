@@ -1,17 +1,9 @@
-import React, {
-  useContext,
-  useState,
-  useMemo,
-  useEffect,
-  ReactNode,
-  useCallback,
-} from 'react';
+import React, { useMemo, useEffect } from 'react';
 import styled from 'styled-components/native';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import MonacoEditor from 'react-monaco-editor';
-import typings from '../components/Editor';
-import DocumentContext from '../contexts/Documents';
-import EnvironmentContext from '../contexts/Environment';
+import typings from './Editor/typings';
+import { useEnvironment } from '../../hooks/environment';
 import { Row, IconCell } from '@morten-olsen/iot-ui';
 
 interface Props {
@@ -35,16 +27,14 @@ Object.entries(typings).forEach(([path, defs]) => {
   );
 });
 
-const Wrapper = styled.View`
-`;
+const Wrapper = styled.View``;
 
 const Editor: React.FC<Props> = ({ file, autorun }) => {
   const model = useMemo(
     () => monaco.editor.getModels().find((m) => m.uri.path === file),
     [file]
   );
-  const { compile } = useContext(DocumentContext);
-  const { running, stop } = useContext(EnvironmentContext);
+  const { running, stop, compile } = useEnvironment();
   useEffect(() => {
     if (autorun && model) {
       compile(model.uri.path);
@@ -71,13 +61,26 @@ const Editor: React.FC<Props> = ({ file, autorun }) => {
   return (
     <Wrapper>
       <Row
-      title={model && model.uri.path}
-      left={model && (
-        <>
-        {running !== file && <IconCell name="play-circle" onPress={() => compile(model.uri.path)} />}
-          {running === file && <IconCell name="stop-circle" color="red" onPress={() => stop()} />}
-        </>
-      )}
+        title={model && model.uri.path}
+        left={
+          model && (
+            <>
+              {running !== file && (
+                <IconCell
+                  name="play-circle"
+                  onPress={() => compile(model.uri.path)}
+                />
+              )}
+              {running === file && (
+                <IconCell
+                  name="stop-circle"
+                  color="red"
+                  onPress={() => stop()}
+                />
+              )}
+            </>
+          )
+        }
       />
       <MonacoEditor
         width={'100%'}

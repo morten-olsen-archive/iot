@@ -34,7 +34,7 @@ const PreviewWrapper = styled.View`
 `;
 
 const Container: React.FC<Props> = ({ cwd }) => {
-  const [selectedDocument, setSelectedDocument] = useState<
+  const [selectedModel, setSelectedModel] = useState<
     editor.ITextModel | undefined
   >(undefined);
 
@@ -43,13 +43,13 @@ const Container: React.FC<Props> = ({ cwd }) => {
       <SidebarWrapper>
         <Sidebar
           cwd={cwd}
-          selectedDocument={selectedDocument}
-          selectDocument={setSelectedDocument}
+          selectModel={setSelectedModel}
+          selectedModel={selectedModel}
         />
       </SidebarWrapper>
       <EditorWrapper>
-        {selectedDocument && (
-          <Editor key={selectedDocument.uri.path} model={selectedDocument} />
+        {selectedModel && (
+          <Editor key={selectedModel.uri.path} model={selectedModel} />
         )}
       </EditorWrapper>
       <PreviewWrapper>

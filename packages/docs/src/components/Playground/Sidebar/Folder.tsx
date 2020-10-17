@@ -6,23 +6,15 @@ import File from './File';
 
 interface Props {
   location: string;
-  files: editor.ITextModel[];
-  selectedFile: string;
-  mainFile: string;
-  runningFile: string | undefined;
-  selectDocument: (document: editor.ITextModel) => void;
-  selectMain: (path: string) => void;
-  stop: (path: string) => void;
+  models: editor.ITextModel[];
+  selectedModel?: editor.ITextModel;
+  selectModel: (model: editor.ITextModel) => void;
 }
 
 interface FolderProps {
   branch: Branch;
-  selectedFile: string;
-  mainFile: string;
-  runningFile: string | undefined;
-  selectDocument: (document: editor.ITextModel) => void;
-  selectMain: (path: string) => void;
-  stop: (path: string) => void;
+  selectedModel?: editor.ITextModel;
+  selectModel: (model: editor.ITextModel) => void;
 }
 
 interface Branch {
@@ -30,11 +22,7 @@ interface Branch {
   directories: {
     [name: string]: Branch;
   };
-  files: {
-    name: string;
-    model: editor.ITextModel;
-    path: string;
-  }[];
+  files: editor.ITextModel[];
 }
 
 const Spacer = styled.View`
@@ -44,15 +32,15 @@ const Spacer = styled.View`
 const cd = (location: string, branch: Branch) => {
   const locationParts = location.split('/').filter((a) => a);
   return locationParts.reduce((output, current) => {
-    return output.directories[current];
+    return output.directories[current] || { directories: {}, files: [] };
   }, branch);
 };
 
-const buildTree = (files: editor.ITextModel[]) => {
-  const tree = files.reduce(
-    (output, file) => {
-      const location = file.uri.path.split('/').filter((a) => !!a);
-      const fileName = location.pop();
+const buildTree = (models: editor.ITextModel[]) => {
+  const tree = models.reduce(
+    (output, model) => {
+      const location = model.uri.path.split('/').filter((a) => !!a);
+      location.pop();
       const scope = location.reduce((scopeOutput, locationPart) => {
         if (!scopeOutput.directories[locationPart]) {
           scopeOutput.directories[locationPart] = {
@@ -63,11 +51,7 @@ const buildTree = (files: editor.ITextModel[]) => {
         }
         return scopeOutput.directories[locationPart];
       }, output);
-      scope.files.push({
-        name: fileName!,
-        model: file,
-        path: file.uri.path,
-      });
+      scope.files.push(model);
       return output;
     },
     {
@@ -82,12 +66,8 @@ const buildTree = (files: editor.ITextModel[]) => {
 
 const Folder: React.FC<FolderProps> = ({
   branch,
-  selectedFile,
-  mainFile,
-  runningFile,
-  selectDocument,
-  selectMain,
-  stop,
+  selectModel,
+  selectedModel,
 }) => {
   const [visible, setVisible] = useState(true);
   return (
@@ -100,28 +80,20 @@ const Folder: React.FC<FolderProps> = ({
       />
       {visible && (
         <Row left={<Spacer />}>
-          {branch.files.map((file) => (
+          {branch.files.map((model) => (
             <File
-              name={file.name}
-              isMain={file.path === mainFile}
-              isRunning={file.path === runningFile}
-              isSelected={file.path === selectedFile}
-              stop={() => stop(file.path)}
-              key={file.path}
-              select={() => selectDocument(file.model)}
-              makeMain={() => selectMain(file.path)}
+              model={model}
+              isSelected={model === selectedModel}
+              key={model.uri.path}
+              select={() => selectModel(model)}
             />
           ))}
           {Object.values(branch.directories).map((dir) => (
             <Folder
               key={dir.name}
-              stop={stop}
-              selectDocument={selectDocument}
+              selectModel={selectModel}
               branch={dir}
-              selectedFile={selectedFile}
-              runningFile={runningFile}
-              mainFile={mainFile}
-              selectMain={selectMain}
+              selectedModel={selectedModel}
             />
           ))}
         </Row>
@@ -132,15 +104,11 @@ const Folder: React.FC<FolderProps> = ({
 
 const Tree: React.FC<Props> = ({
   location,
-  files,
-  selectedFile,
-  mainFile,
-  selectDocument,
-  runningFile,
-  selectMain,
-  stop,
+  selectModel,
+  selectedModel,
+  models,
 }) => {
-  const tree = useMemo(() => buildTree(files), [files]);
+  const tree = useMemo(() => buildTree(models), [models]);
   const branch = useMemo(() => cd(location, tree), [tree, location]);
 
   return (
@@ -148,12 +116,8 @@ const Tree: React.FC<Props> = ({
       <Folder
         key={branch.name}
         branch={branch}
-        selectedFile={selectedFile}
-        mainFile={mainFile}
-        selectDocument={selectDocument}
-        selectMain={selectMain}
-        runningFile={runningFile}
-        stop={stop}
+        selectedModel={selectedModel}
+        selectModel={selectModel}
       />
     </>
   );

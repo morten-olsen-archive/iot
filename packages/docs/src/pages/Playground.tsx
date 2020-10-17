@@ -1,7 +1,6 @@
 import React from 'react';
-import { EnvironmentProvider } from './contexts/Environment';
-import { DocumentsProvider } from './contexts/Documents';
-import Container from './components/Container';
+import { EnvironmentProvider } from '../context/EnvironmentContext';
+import Playground from '../components/Playground';
 
 const devices = [
   {
@@ -30,14 +29,10 @@ const devices = [
   },
 ];
 
-const Playground: React.FC = () => {
-  return (
-    <EnvironmentProvider initialDevices={devices}>
-      <DocumentsProvider main="/examples/RandomColorUnit.ts">
-        <Container cwd="/examples" />
-      </DocumentsProvider>
-    </EnvironmentProvider>
-  );
-};
+const PlaygroundPage = () => (
+  <EnvironmentProvider initialDevices={devices}>
+    <Playground cwd="/tutorial" />
+  </EnvironmentProvider>
+);
 
-export default Playground;
+export default PlaygroundPage;
