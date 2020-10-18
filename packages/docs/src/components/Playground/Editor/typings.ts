@@ -5,6 +5,7 @@ import Iql from '!!raw-loader!@morten-olsen/iot/dist/Iql.d.ts';
 import Store from '!!raw-loader!@morten-olsen/iot/dist/Store.d.ts';
 import KeyValue from '!!raw-loader!@morten-olsen/iot/dist/KeyValue.d.ts';
 import Changes from '!!raw-loader!@morten-olsen/iot/dist/Changes.d.ts';
+import Multiplexer from '!!raw-loader!@morten-olsen/iot-multiplex/dist/index.d.ts';
 import timewarp from '!!raw-loader!@morten-olsen/timewarp/dist/index.d.ts';
 import Timer from '!!raw-loader!@morten-olsen/timewarp/dist/Timer.d.ts';
 
@@ -25,6 +26,7 @@ const typings: { [name: string]: string } = {
   'morten-olsen__iot/Changes.d.ts': Changes,
   'morten-olsen__timewarp/index.d.ts': timewarp,
   'morten-olsen__timewarp/Timer.d.ts': Timer,
+  'morten-olsen__iot-multiplexer/index.d.ts': Timer,
   'time/index.d.ts': time,
 };
 

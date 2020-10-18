@@ -1,13 +1,14 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components/native';
-import { H5, Modal, Row, IconCell } from '@morten-olsen/iot-ui';
+import { H5, Row } from '@morten-olsen/iot-ui';
 import { useEnvironment } from '../../../hooks/environment';
-import Device from '../../../context/Environment/Device';
+import { useHomes } from '../../../hooks/homes';
+import { useHome } from '../../../hooks/home';
 import AddDevice from './AddDevice';
+import ManageHomes from './ManageHomes';
 
 interface Props {
   onlyBaseKeys?: string[];
-  allowModifications?: boolean;
   showRooms?: boolean;
 }
 
@@ -24,13 +25,10 @@ const RoomElements = styled.View`
   flex-wrap: wrap;
 `;
 
-const Environment: React.FC<Props> = ({
-  onlyBaseKeys,
-  allowModifications,
-  showRooms,
-}) => {
-  const [adding, setAdding] = useState(false);
-  const { devices, deviceTypes, addDevice } = useEnvironment();
+const Environment: React.FC<Props> = ({ onlyBaseKeys, showRooms }) => {
+  const { removeDevice } = useHomes();
+  const { allowEdit } = useHome();
+  const { devices, deviceTypes } = useEnvironment();
   const preparedDevices = useMemo(
     () =>
       devices
@@ -40,6 +38,8 @@ const Environment: React.FC<Props> = ({
           const element = (
             <type.component
               key={device.baseKey}
+              room={device.room}
+              onRemove={allowEdit ? () => removeDevice(device.key) : undefined}
               channels={type.createChannels(device.baseKey)}
             />
           );
@@ -48,26 +48,13 @@ const Environment: React.FC<Props> = ({
             [device.room]: [...(output[device.room] || []), element],
           };
         }, {} as { [room: string]: any }),
-    [devices, deviceTypes, onlyBaseKeys]
+    [devices, deviceTypes, onlyBaseKeys, removeDevice, allowEdit]
   );
 
-  const onAdd = useCallback(
-    (device: Device) => {
-      addDevice(device);
-      setAdding(false);
-    },
-    [addDevice]
-  );
+  console.log('allow edit', allowEdit);
 
   return (
     <Scroll>
-      <Modal
-        title="Add Device"
-        visible={adding}
-        onClose={() => setAdding(false)}
-      >
-        <AddDevice onAdd={onAdd} />
-      </Modal>
       <Wrapper>
         {Object.entries(preparedDevices).map(([roomName, deviceElements]) => (
           <RoomWrapper key={roomName}>
@@ -82,13 +69,7 @@ const Environment: React.FC<Props> = ({
           </RoomWrapper>
         ))}
       </Wrapper>
-      {allowModifications && (
-        <Row
-          title="Add device"
-          left={<IconCell name="plus-circle" />}
-          onPress={() => setAdding(true)}
-        />
-      )}
+      {allowEdit && <AddDevice />}
     </Scroll>
   );
 };

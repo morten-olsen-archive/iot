@@ -1,5 +1,6 @@
 import Unit, { Changes, ChangeRequest, Store } from '@morten-olsen/iot';
 import * as iot from '@morten-olsen/iot';
+import * as multiplex from '@morten-olsen/iot-multiplex';
 import typescript from 'typescript';
 import TimeWarp from '@morten-olsen/timewarp';
 import path from 'path';
@@ -15,6 +16,7 @@ interface SetupArgs {
 
 const libs: { [name: string]: any } = {
   '@morten-olsen/iot': iot,
+  '@morten-olsen/iot-multiplex': multiplex,
 };
 
 class WorkerUnit {

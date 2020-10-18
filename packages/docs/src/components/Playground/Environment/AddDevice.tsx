@@ -1,13 +1,11 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { Row } from '@morten-olsen/iot-ui';
+import { Modal, Row, IconCell } from '@morten-olsen/iot-ui';
 import { useEnvironment } from '../../../hooks/environment';
-import Device from '../../../context/Environment/Device';
+import { useHome } from '../../../hooks/home';
 
-interface Props {
-  onAdd: (device: Device) => void;
-}
-
-const AddDevice: React.FC<Props> = ({ onAdd }) => {
+const AddDevice: React.FC = () => {
+  const home = useHome();
+  const [visible, setVisible] = useState(false);
   const { deviceTypes } = useEnvironment();
   const [selectedTypeKey, setSelectedTypeKey] = useState<string | undefined>(
     undefined
@@ -27,59 +25,78 @@ const AddDevice: React.FC<Props> = ({ onAdd }) => {
     }));
   }, []);
 
+  const onAdd = useCallback(
+    (device: any) => {
+      home.setDevice(device);
+      setVisible(false);
+    },
+    [home]
+  );
+
   return (
     <>
-      {!selectedType || !selectedTypeKey ? (
-        <>
-          {Object.entries(deviceTypes).map(([key, type]) => (
-            <Row
-              key={key}
-              title={type.name}
-              onPress={() => setSelectedTypeKey(key)}
-            />
-          ))}
-        </>
-      ) : (
-        <>
-          <Row
-            title="Base key"
-            right={
-              <input
-                value={baseKey}
-                onChange={(evt) => setBaseKey(evt.target.value)}
+      <Row
+        title="Add device"
+        left={<IconCell name="plus-circle" />}
+        onPress={() => setVisible(true)}
+      />
+      <Modal
+        title="Add Device"
+        visible={visible}
+        onClose={() => setVisible(false)}
+      >
+        {!selectedType || !selectedTypeKey ? (
+          <>
+            {Object.entries(deviceTypes).map(([key, type]) => (
+              <Row
+                key={key}
+                title={type.name}
+                onPress={() => setSelectedTypeKey(key)}
               />
-            }
-          />
-          <Row
-            title="Room"
-            right={
-              <input
-                value={room}
-                onChange={(evt) => setRoom(evt.target.value)}
-              />
-            }
-          />
-          {Object.entries(selectedType.config).map(([key, configDef]) => (
+            ))}
+          </>
+        ) : (
+          <>
             <Row
-              key={key}
-              title={configDef.name}
+              title="Base key"
               right={
                 <input
-                  value={config[key] || ''}
-                  onChange={(evt) => setConfigValue(key, evt.target.value)}
+                  value={baseKey}
+                  onChange={(evt) => setBaseKey(evt.target.value)}
                 />
               }
             />
-          ))}
-          <button
-            onClick={() =>
-              onAdd({ type: selectedTypeKey, baseKey, room, config })
-            }
-          >
-            Add
-          </button>
-        </>
-      )}
+            <Row
+              title="Room"
+              right={
+                <input
+                  value={room}
+                  onChange={(evt) => setRoom(evt.target.value)}
+                />
+              }
+            />
+            {Object.entries(selectedType.config).map(([key, configDef]) => (
+              <Row
+                key={key}
+                title={configDef.name}
+                right={
+                  <input
+                    value={config[key] || ''}
+                    onChange={(evt) => setConfigValue(key, evt.target.value)}
+                  />
+                }
+              />
+            ))}
+            <button
+              onClick={() =>
+                onAdd({ type: selectedTypeKey, baseKey, room, config })
+              }
+            >
+              Add
+            </button>
+          </>
+        )}
+      </Modal>
     </>
   );
 };

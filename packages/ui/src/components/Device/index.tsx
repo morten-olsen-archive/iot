@@ -1,79 +1,38 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components/native';
-import { Octicons } from '@expo/vector-icons';
+import Row, { Icon } from '../Row';
 import { Theme } from '../../theme';
-import { Subtitle1, Subtitle2 } from '../../typography';
-import Checkbox from '../Checkbox';
 
 interface Props {
-  icon: string;
-  color: string;
+  actions: ReactNode;
   name: string;
-  active: boolean;
-  onActiveChange?: (state: boolean) => void;
-  size?: number;
-  onPressIn: () => void;
-  onPressOut?: () => void;
+  room?: string;
+  type?: string;
+  onRemove?: () => void;
 }
-
-const Touch = styled.TouchableOpacity``;
 
 const Wrapper = styled.View<{ theme: Theme }>`
   flex-direction: row;
   background: ${({ theme }) => theme.colors.backgroundShade1};
   border-radius: 5px;
-  width: 250px;
   margin: 10px;
-  height: 100px;
+  padding: 10px;
   shadow-color: #000;
-  shadow-opacity: 0.3;
+  shadow-opacity: 0.2;
   shadow-offset: 0;
-  shadow-radius: 15px;
+  shadow-radius: 20px;
 `;
 
-const Ear = styled.View`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-`;
-
-const Content = styled.View`
-  flex-direction: row;
-  align-items: center;
-`;
-
-const Lines = styled.View``;
-
-const Icon = styled.View`
-  padding-left: 30px;
-  padding-right: 10px;
-`;
-
-const Device: React.FC<Props> = ({
-  name,
-  icon,
-  color,
-  onPressIn,
-  onPressOut,
-  active,
-  onActiveChange,
-}) => {
+const Device: React.FC<Props> = ({ actions, name, room, onRemove, type }) => {
   return (
     <Wrapper>
-      <Ear>
-        <Checkbox value={active} onChange={onActiveChange} />
-      </Ear>
-      <Content>
-        <Icon>
-          <Touch onPressIn={onPressIn} onPressOut={onPressOut}>
-            <Octicons name={icon} color={color || '#fff"'} size={40} />
-          </Touch>
-        </Icon>
-        <Lines>
-          <Subtitle1 numberOfLines={3}>{name}</Subtitle1>
-          <Subtitle2>Ready to light</Subtitle2>
-        </Lines>
-      </Content>
+      <Row
+        left={actions}
+        title={name}
+        overline={room}
+        description={type}
+        right={onRemove && <Icon name="trash" color="#e74c3c" onPress={onRemove} />}
+      />
     </Wrapper>
   );
 };
