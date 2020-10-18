@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { Row, IconCell } from '@morten-olsen/iot-ui';
+import { Row } from '@morten-olsen/iot-ui';
 import {
   HashRouter as Router,
   Route,
@@ -10,6 +10,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { EnvironmentProvider } from '../context/EnvironmentContext';
+import { HomeProvider } from '../context/HomeContext';
 
 const Top = styled.View`
   flex-direction: row;
@@ -20,33 +21,6 @@ const Wrapper = styled.View`
   height: 100%;
 `;
 
-const devices = [
-  {
-    type: 'hueLight',
-    baseKey: 'lights.0',
-    room: 'Living Room',
-    config: { name: 'Light 1' },
-  },
-  {
-    type: 'button',
-    baseKey: 'buttons.0',
-    room: 'Living Room',
-    config: { name: 'On Switch' },
-  },
-  {
-    type: 'button',
-    baseKey: 'buttons.1',
-    room: 'Living Room',
-    config: { name: 'Off Switch' },
-  },
-  {
-    type: 'motionSensor',
-    baseKey: 'motionSensors.0',
-    room: 'Living Room',
-    config: { name: 'Motion Sensor' },
-  },
-];
-
 import Playground from '../pages/Playground';
 import Document from '../pages/Document';
 
@@ -54,11 +28,13 @@ const DocumentRoute: React.FC = () => {
   const { path } = useRouteMatch();
 
   return (
-    <EnvironmentProvider initialDevices={devices}>
-      <Route path={`${path}/:name*`}>
-        <Document />
-      </Route>
-    </EnvironmentProvider>
+    <HomeProvider homeKey="demo">
+      <EnvironmentProvider>
+        <Route path={`${path}/:name*`}>
+          <Document />
+        </Route>
+      </EnvironmentProvider>
+    </HomeProvider>
   );
 };
 

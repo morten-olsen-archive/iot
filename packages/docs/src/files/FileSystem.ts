@@ -1,5 +1,5 @@
 import { editor, Uri } from 'monaco-editor/esm/vs/editor/editor.api';
-import storage from './db';
+import storage from '../db';
 import { debounce } from '../utils/debounce';
 
 type Layer0Files = {

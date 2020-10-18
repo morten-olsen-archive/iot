@@ -1,11 +1,12 @@
 import Unit, { Changes, iql } from '@morten-olsen/iot';
 
 class MotionSensorUnit extends Unit {
-  private _timerId?: any;
+  private timerId?: any;
 
-  onChange = async (changes: Changes, key: iql) => {
+  onChange = async (_changes: Changes, key: iql) => {
     if (key('motionSensors.0.motionDetected').became(false).$) {
-      this._timerId = setTimeout(async () => {
+      this.clearTimer();
+      this.timerId = setTimeout(async () => {
         await this.change({
           'lights.0.on': false,
         });
@@ -13,12 +14,16 @@ class MotionSensorUnit extends Unit {
     }
 
     if (key('motionSensors.0.motionDetected').became(true).$) {
-      if (this._timerId) {
-        clearTimeout(this._timerId);
-      }
+      this.clearTimer();
       await this.change({
         'lights.0.on': true,
       });
+    }
+  };
+
+  clearTimer = () => {
+    if (this.timerId) {
+      clearTimeout(this.timerId);
     }
   };
 }

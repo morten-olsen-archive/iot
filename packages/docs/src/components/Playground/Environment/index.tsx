@@ -1,6 +1,7 @@
 import React, { useContext, useMemo, useState, useCallback } from 'react';
 import styled from 'styled-components/native';
 import { Row, IconCell } from '@morten-olsen/iot-ui';
+import ManageHomes from './ManageHomes';
 
 import DeviceView from './DeviceView';
 import StoreView from './StoreView';
@@ -42,6 +43,7 @@ const Environment = () => {
             selected={key === currentView}
           />
         ))}
+        <ManageHomes />
       </TabBar>
       <View {...props} />
     </>

@@ -7,6 +7,8 @@ import { Theme } from '../../theme';
 interface Props {
   name: string;
   onPress?: () => void;
+  onPressIn?: () => void;
+  onPressOut?: () => void;
   theme: Theme;
   color?: string;
   size?: number;
@@ -21,15 +23,15 @@ const Wrapper = styled(Cell)`
 
 const Touch = styled.TouchableOpacity``;
 
-const Icon: React.FC<Props> = ({ name, onPress, theme, color, size }) => {
+const Icon: React.FC<Props> = ({ name, onPress, onPressIn, onPressOut, theme, color, size }) => {
   const comp = (
     <Wrapper>
       <Feather name={name} color={color} size={size || theme.sizes.icons} />
     </Wrapper>
   );
 
-  if (onPress) {
-    return <Touch onPress={onPress}>{comp}</Touch>;
+  if (onPress || onPressIn || onPressOut) {
+    return <Touch onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut}>{comp}</Touch>;
   }
   return comp;
 };

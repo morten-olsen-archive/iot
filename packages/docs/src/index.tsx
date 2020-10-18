@@ -8,6 +8,7 @@ import { ThemeProvider } from '@morten-olsen/iot-ui';
 import Router from './Router';
 import { FilesProvider } from './context/FilesContext';
 import { ModelsProvider } from './context/ModelsContext';
+import { HomesProvider } from './context/HomesContext';
 
 const font = document.createElement('link');
 font.rel = 'stylesheet';
@@ -63,7 +64,9 @@ const App = () => (
       <GlobalStyles />
       <ModelsProvider>
         <FilesProvider>
-          <Router />
+          <HomesProvider>
+            <Router />
+          </HomesProvider>
         </FilesProvider>
       </ModelsProvider>
     </ThemeProvider>
