@@ -15,7 +15,7 @@ const Button: React.FC<Props> = ({ channels }) => {
 
   return (
     <Device
-      name={keys.name!.current as any}
+      name={keys.name?.current as any}
       icon="kebab-horizontal"
       color="green"
       active={!!keys.pressed?.current}

@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useMemo,
   ReactNode,
+  useEffect,
 } from 'react';
 import { useFileSystem } from '../../hooks/filesystem';
 import Unit, { ChangeRequest } from '@morten-olsen/iot';
@@ -14,6 +15,7 @@ import Multiplex from '@morten-olsen/iot-multiplex';
 import DeviceType from './DeviceType';
 import Device from './Device';
 import WorkerHost from './WorkerHost';
+import { useDevices } from '../../hooks/home';
 
 import hueLight from './deviceTypes/hueLight';
 import button from './deviceTypes/button';
@@ -24,11 +26,8 @@ interface EnvironmentContextValue {
   running?: string;
   deviceTypes: { [name: string]: DeviceType };
   devices: Device[];
-  addDevice: (device: Device) => void;
-  replaceDevice: (index: number, device: Device) => void;
   timeWarp: number;
   warpTime: (amount: number) => void;
-  removeDevice: (index: number) => void;
   compile: (main: string) => Promise<void>;
   stop: () => void;
 }
@@ -56,7 +55,7 @@ const EnvironmentProvider: React.FC<ProviderProps> = ({
   const [ready, setReady] = useState(false);
   const [timeWarp, setTimeWarp] = useState(0);
   const [running, setRunning] = useState<string | undefined>(undefined);
-  const [devices, setDevices] = useState<Device[]>(initialDevices);
+  const devices = useDevices();
   const [master, setMaster] = useState<Master | undefined>(undefined);
   const initialState = useMemo(
     () =>
@@ -81,6 +80,10 @@ const EnvironmentProvider: React.FC<ProviderProps> = ({
     [initialState, workerHost]
   );
 
+  useEffect(() => {
+    master?.process(initialState);
+  }, [master, initialState]);
+
   const compile = useCallback(
     async (location: string) => {
       const files = fileSystem.getFiles();
@@ -103,34 +106,6 @@ const EnvironmentProvider: React.FC<ProviderProps> = ({
     setRunning(undefined);
   }, [workerHost]);
 
-  const addDevice = useCallback(
-    (device: Device) => {
-      const type = deviceTypes[device.type];
-      setDevices((current) => [...current, device]);
-      if (master) {
-        const changes = type.createState(device.baseKey, device.config);
-        master.process(changes);
-      }
-    },
-    [master]
-  );
-
-  const replaceDevice = useCallback((index: number, device: Device) => {
-    setDevices((current) => {
-      const clone = [...current];
-      clone[index] = device;
-      return clone;
-    });
-  }, []);
-
-  const removeDevice = useCallback((index: number) => {
-    setDevices((current) => {
-      const clone = [...current];
-      delete clone[index];
-      return clone;
-    });
-  }, []);
-
   return (
     <UnitProvider loader={<></>} setup={setup}>
       <EnvironmentContext.Provider
@@ -141,9 +116,6 @@ const EnvironmentProvider: React.FC<ProviderProps> = ({
           ready,
           devices,
           compile,
-          addDevice,
-          removeDevice,
-          replaceDevice,
           timeWarp,
           warpTime,
         }}

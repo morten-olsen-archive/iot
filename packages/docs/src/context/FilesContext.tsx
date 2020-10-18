@@ -1,5 +1,5 @@
 import React, { createContext, useMemo, useState, useEffect } from 'react';
-import FileSystem from '../files';
+import FileSystem from '../files/FileSystem';
 
 interface FilesContextValue {
   fileSystem: FileSystem;

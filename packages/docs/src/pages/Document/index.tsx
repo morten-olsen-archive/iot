@@ -17,7 +17,7 @@ const Wrapper = styled.div`
 `;
 
 const Document = () => {
-  const { name } = useParams();
+  const { name } = useParams<{ name: string }>();
   const DocumentBody = useMemo(() => documents[name], [name]);
   return (
     <Wrapper>{DocumentBody ? <DocumentBody /> : <div>Not found</div>}</Wrapper>
