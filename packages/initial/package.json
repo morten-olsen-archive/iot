@@ -9,5 +9,6 @@
   },
   "dependencies": {
     "@morten-olsen/iot": "^1.0.0-alpha.2"
-  }
+  },
+  "gitHead": "05af95b64ec2e56fec0e6f7f5452ee11390e95ee"
 }

@@ -14,7 +14,8 @@
   "scripts": {
     "postinstall": "lerna bootstrap",
     "dev:docs": "lerna run --stream --scope=@morten-olsen/iot-docs dev",
-    "build:docs": "lerna run --stream --scope=@morten-olsen/iot-docs build"
+    "build:docs": "lerna run --stream --scope=@morten-olsen/iot-docs build",
+    "prerelease": "yarn lerna publish prerelease --preid=\"alpha\" --pre-dist-tag=\"alpha\""
   },
   "devDependencies": {
     "@react-native-community/eslint-config": "^2.0.0",
