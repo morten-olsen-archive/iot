@@ -9,6 +9,7 @@ on:
 
 jobs:
   build:
+    if: "!contains(github.event.head_commit.author.name, 'Github Action')"
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -16,7 +17,7 @@ jobs:
 
       - name: Configure CI Git User
         run: |
-          git config --global user.name '@morten-olsen'
+          git config --global user.name 'Github Action'
           git config --global user.email 'morten-olsen@users.noreply.github.com'
           git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_PAT@github.com/morten-olsen/iot
         env:
