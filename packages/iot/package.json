@@ -2,5 +2,9 @@
   "name": "@morten-olsen/iot",
   "version": "1.0.0",
   "main": "dist/index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/morten-olsen/iot"
+  }
 }

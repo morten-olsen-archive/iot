@@ -10,7 +10,7 @@ import { useFileSystem } from '../../hooks/filesystem';
 import Unit, { ChangeRequest } from '@morten-olsen/iot';
 import { UnitProvider } from '@morten-olsen/iot-react';
 import Initial from '@morten-olsen/iot-initial';
-import Master from '@morten-olsen/iot-master';
+import Root from '@morten-olsen/iot-root';
 import Multiplex from '@morten-olsen/iot-multiplex';
 import DeviceType from './DeviceType';
 import Device from './Device';
@@ -33,7 +33,6 @@ interface EnvironmentContextValue {
 }
 
 interface ProviderProps {
-  initialDevices?: Device[];
   children: ReactNode;
 }
 
@@ -48,7 +47,6 @@ const EnvironmentContext = createContext<EnvironmentContextValue>(
 );
 
 const EnvironmentProvider: React.FC<ProviderProps> = ({
-  initialDevices = [],
   children,
 }) => {
   const fileSystem = useFileSystem();
@@ -56,7 +54,7 @@ const EnvironmentProvider: React.FC<ProviderProps> = ({
   const [timeWarp, setTimeWarp] = useState(0);
   const [running, setRunning] = useState<string | undefined>(undefined);
   const devices = useDevices();
-  const [master, setMaster] = useState<Master | undefined>(undefined);
+  const [master, setMaster] = useState<Root | undefined>(undefined);
   const initialState = useMemo(
     () =>
       devices.reduce((output, current) => {
@@ -72,7 +70,7 @@ const EnvironmentProvider: React.FC<ProviderProps> = ({
     async (unit: Unit) => {
       const multiplex = new Multiplex([unit, workerHost]);
       const initial = new Initial(multiplex, initialState);
-      const newMaster = new Master(initial);
+      const newMaster = new Root(initial);
       await newMaster.initialize();
       setMaster(newMaster);
       setReady(true);

@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "private": true,
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/morten-olsen/iot"
+  },
   "workspaces": [
     "packages/*"
   ],

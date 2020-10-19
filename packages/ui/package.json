@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "license": "MIT",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/morten-olsen/iot"
+  },
   "devDependencies": {
     "@types/react": "^16.9.52",
     "@types/styled-components": "^5.1.4",

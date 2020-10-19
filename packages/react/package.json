@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "license": "MIT",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/morten-olsen/iot"
+  },
   "dependencies": {
     "@morten-olsen/iot": "^1.0.0",
-    "@morten-olsen/iot-master": "^1.0.0",
+    "@morten-olsen/iot-root": "^1.0.0",
     "@morten-olsen/iot-multiplex": "^1.0.0",
     "@morten-olsen/iot-socket-client": "^1.0.0",
     "@types/react-dom": "^16.9.8",
