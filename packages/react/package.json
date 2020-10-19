@@ -1,6 +1,6 @@
 {
   "name": "@morten-olsen/iot-react",
-  "version": "1.0.0-alpha.13",
+  "version": "1.0.0-alpha.14",
   "main": "dist/index.js",
   "license": "MIT",
   "repository": {
@@ -8,10 +8,10 @@
     "url": "https://github.com/morten-olsen/iot"
   },
   "dependencies": {
-    "@morten-olsen/iot": "^1.0.0-alpha.13",
-    "@morten-olsen/iot-multiplex": "^1.0.0-alpha.13",
-    "@morten-olsen/iot-root": "^1.0.0-alpha.13",
-    "@morten-olsen/iot-socket-client": "^1.0.0-alpha.13",
+    "@morten-olsen/iot": "^1.0.0-alpha.14",
+    "@morten-olsen/iot-multiplex": "^1.0.0-alpha.14",
+    "@morten-olsen/iot-root": "^1.0.0-alpha.14",
+    "@morten-olsen/iot-socket-client": "^1.0.0-alpha.14",
     "@types/react-dom": "^16.9.8",
     "eventemitter3": "^4.0.7"
   },
