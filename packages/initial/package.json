@@ -1,6 +1,6 @@
 {
   "name": "@morten-olsen/iot-initial",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha.2",
   "main": "dist/index.js",
   "license": "MIT",
   "repository": {
@@ -8,6 +8,6 @@
     "url": "https://github.com/morten-olsen/iot"
   },
   "dependencies": {
-    "@morten-olsen/iot": "^1.0.0"
+    "@morten-olsen/iot": "^1.0.0-alpha.2"
   }
 }
