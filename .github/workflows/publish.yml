@@ -25,7 +25,7 @@ jobs:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout and pull branch
-        run: git checkout "${GITHUB_REF:9}" && git pull
+        run: git checkout "${GITHUB_REF:11}" && git pull
 
       - name: Install Packages
         run: yarn install
