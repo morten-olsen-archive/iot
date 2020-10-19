@@ -22,7 +22,7 @@ jobs:
           git config --global user.email 'morten-olsen@users.noreply.github.com'
           git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_PAT@github.com/morten-olsen/iot
         env:
-          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_PAT: ${{ secrets.GH_TOKEN }}
 
       - name: Checkout and pull branch
         run: git checkout "${GITHUB_REF:11}" && git pull
@@ -33,8 +33,8 @@ jobs:
       - name: Publish package
         run: "yarn lerna publish prerelease --yes --message 'chore: release new versions %s'"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.GH_TOKEN}}
 
 
