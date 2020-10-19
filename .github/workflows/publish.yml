@@ -31,7 +31,7 @@ jobs:
         run: yarn install
 
       - name: Publish package
-        run: "yarn lerna publish prerelease --yes --message 'chore: release new versions %s'"
+        run: "yarn lerna publish prerelease --yes --message 'chore: release new versions %s' --force-publish"
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
