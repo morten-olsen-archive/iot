@@ -38,7 +38,7 @@ const Editor: React.FC<Props> = ({ model }) => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper key={model.id}>
       <MonacoEditor
         width={'100%'}
         height={'100%'}

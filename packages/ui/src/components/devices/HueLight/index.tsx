@@ -25,7 +25,7 @@ const HueLight: React.FC<Props> = ({ channels, room, onRemove }) => {
         <Icon
           name={keys.on?.current ? 'sun' : 'moon'}
           color={keys.on?.current ? '#f39c12' : 'black'}
-          onPress={() => change({ [channels.on]: true })}
+          onPress={() => change({ [channels.on]: !keys.on?.current })}
         />
       }
     />

@@ -56,9 +56,10 @@ class FileSystem {
   public setFile = (location: string, content: string) => {
     const correctedLocation = `file://${location}`;
     const current = editor.getModel(Uri.parse(correctedLocation));
-    if (current) {
+    if (current && !current.isDisposed()) {
       current.setValue(content);
     } else {
+      console.log('Creating model', location);
       editor.createModel(content, 'typescript', Uri.parse(correctedLocation));
     }
   };
@@ -99,7 +100,7 @@ class FileSystem {
 
   public setupLayer1 = async () => {
     Object.entries(this._layer0).forEach(([location, versions]) => {
-      this.setFile(location, versions['1']);
+      // this.setFile(location, versions['1']);
     });
     await storage.setup();
     const dbFiles = await storage.getFiles();
