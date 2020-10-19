@@ -24,6 +24,11 @@ jobs:
 
       - name: Checkout and pull branch
         run: git checkout "${GITHUB_REF:11}" && git pull
+        
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: 'https://npm.pkg.github.com'
 
       - name: Authenticate with Registry
         run: |
