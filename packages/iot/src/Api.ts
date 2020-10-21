@@ -4,10 +4,18 @@ interface ChangeRequest {
   [key: string]: AllowedValues;
 }
 
-interface Api {
-  setValues: (changes: ChangeRequest) => Promise<void>;
+interface ChangeRequestOptions {
+  actor?: string;
+  jwt?: string;
 }
 
-export { ChangeRequest };
+interface Api {
+  setValues: (
+    changes: ChangeRequest,
+    options: ChangeRequestOptions
+  ) => Promise<void>;
+}
+
+export { ChangeRequest, ChangeRequestOptions };
 
 export default Api;

@@ -13,9 +13,13 @@ class Initial extends Unit {
 
   onSetup = async () => {
     await this.change(this._initial);
-    this._unit.setup(this.store, {
-      setValues: this.change,
-    });
+    this._unit.setup(
+      this.store,
+      {
+        setValues: this.change,
+      },
+      this.config
+    );
     this._setup = true;
   };
 

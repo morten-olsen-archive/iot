@@ -3,6 +3,7 @@ import { Socket } from 'socket.io';
 
 class Client extends Unit {
   private _socket: Socket;
+  private _jtw?: string;
 
   constructor(socket: Socket) {
     super();
@@ -11,9 +12,16 @@ class Client extends Unit {
 
   onSetup = async () => {
     this._socket.on('setValues', this.onSetValues);
+    this._socket.on('setJwt', this.onSetJwt);
     this._socket.emit('init', {
       store: this.store,
+      config: this.config,
     });
+  };
+
+  onSetJwt = async ({ jwt, responseId }: any) => {
+    this._jtw = jwt;
+    this._socket.emit(`response_${responseId}`);
   };
 
   onChange = async (changes: Changes) => {
@@ -21,7 +29,9 @@ class Client extends Unit {
   };
 
   onSetValues = (changes: ChangeRequest) => {
-    this.change(changes);
+    this.change(changes, {
+      jwt: this._jtw,
+    });
   };
 }
 
