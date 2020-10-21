@@ -1,8 +1,11 @@
-import React, { useContext, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
+import styled from 'styled-components/native';
 import { editor, Uri } from 'monaco-editor/esm/vs/editor/editor.api';
 import { useModels } from '../../../hooks/models';
+import { useDownload } from '../../../hooks/export';
 import { Modal, Row, IconCell } from '@morten-olsen/iot-ui';
 import Folder from './Folder';
+import {useEnvironment} from '../../../hooks/environment';
 
 interface Props {
   selectedModel?: editor.ITextModel;
@@ -10,8 +13,14 @@ interface Props {
   cwd: string;
 }
 
+const FilesWrapper = styled.View`
+  flex: 1;
+`;
+
 const Sidebar: React.FC<Props> = ({ selectedModel, selectModel, cwd }) => {
   const models = useModels();
+  const { running } = useEnvironment();
+  const download = useDownload(cwd, running!);
   const [adding, setAdding] = useState(false);
   const [addPath, setAddPath] = useState(cwd + '/');
 
@@ -31,11 +40,20 @@ const Sidebar: React.FC<Props> = ({ selectedModel, selectModel, cwd }) => {
         title="Files"
         description={cwd}
       />
-      <Folder
-        models={models}
-        location={cwd}
-        selectedModel={selectedModel}
-        selectModel={selectModel}
+      <FilesWrapper>
+        <Folder
+          models={models}
+          location={cwd}
+          selectedModel={selectedModel}
+          selectModel={selectModel}
+        />
+      </FilesWrapper>
+      <Row
+        left={
+          <>
+            {running && <IconCell onPress={() => { download(cwd, running); }} name="download" />}
+          </>
+        }
       />
       <Modal visible={adding} onClose={() => setAdding(false)} title="Add file">
         <input

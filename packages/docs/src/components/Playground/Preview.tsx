@@ -4,6 +4,7 @@ import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import MonacoEditor from 'react-monaco-editor';
 import typings from './Editor/typings';
 import { useEnvironment } from '../../hooks/environment';
+import { useModels } from '../../hooks/models';
 import { Row, IconCell } from '@morten-olsen/iot-ui';
 
 interface Props {
@@ -30,9 +31,10 @@ Object.entries(typings).forEach(([path, defs]) => {
 const Wrapper = styled.View``;
 
 const Editor: React.FC<Props> = ({ file, autorun }) => {
+  const models = useModels();
   const model = useMemo(
-    () => monaco.editor.getModels().find((m) => m.uri.path === file),
-    [file]
+    () => models.find((m) => m.uri.path === file && !m.isDisposed()),
+    [file, models]
   );
   const { running, stop, compile } = useEnvironment();
   useEffect(() => {
@@ -59,7 +61,7 @@ const Editor: React.FC<Props> = ({ file, autorun }) => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper key={model?.id}>
       <Row
         title={model && model.uri.path}
         left={
