@@ -1,19 +1,36 @@
 import Store from './Store';
 import Changes from './Changes';
-import Api, { ChangeRequest } from './Api';
+import Api, { ChangeRequest, ChangeRequestOptions } from './Api';
 import Iql from './Iql';
+import UnitConfig from './UnitConfig';
+import JwksContext from './JwksContext';
 
 abstract class Unit {
+  private _actor: string;
   private _store?: Store;
   private _api?: Api;
+  private _config: UnitConfig = {};
+  private _jwksContext?: JwksContext;
 
-  setup = async (store: Store, api: Api) => {
+  constructor(actor?: string) {
+    this._actor = actor || this.constructor.name;
+  }
+
+  setup = async (store: Store, api: Api, config?: UnitConfig) => {
     this._store = store;
     this._api = api;
+    this._config = config || {};
+    if (this._config.jwksUri) {
+      this._jwksContext = new JwksContext(this._config.jwksUri);
+    }
     if (this.onSetup) {
       await this.onSetup();
     }
   };
+
+  get config() {
+    return this._config;
+  }
 
   onSetup?: () => Promise<void>;
 
@@ -30,6 +47,14 @@ abstract class Unit {
     }
     return this._api;
   }
+
+  protected getJwtData = async (token: string) => {
+    if (!this._jwksContext) {
+      throw new Error('No jwks uri provided');
+    }
+    const data = await this._jwksContext.getData(token);
+    return data;
+  };
 
   public handleChanges = async (changes: Changes) => {
     const newValues = Object.entries(changes).reduce(
@@ -59,8 +84,14 @@ abstract class Unit {
     key: (key: string) => Iql
   ) => Promise<void>;
 
-  protected change = async (changes: ChangeRequest) => {
-    await this.api.setValues(changes);
+  protected change = async (
+    changes: ChangeRequest,
+    options: ChangeRequestOptions = {}
+  ) => {
+    await this.api.setValues(changes, {
+      actor: this._actor,
+      ...options,
+    });
   };
 }
 

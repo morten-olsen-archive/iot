@@ -18,6 +18,8 @@
   }, {
     "path": "packages/master"
   }, {
+    "path": "packages/jwt"
+  }, {
     "path": "packages/initial"
   }, {
     "path": "packages/multiplex"

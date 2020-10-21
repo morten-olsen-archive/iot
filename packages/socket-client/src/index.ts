@@ -26,6 +26,13 @@ class SocketClient {
   change = async (changes: ChangeRequest) => {
     this._socket.emit('setValues', changes);
   };
+
+  setJwt = async (jwt: string) => {
+    this._socket.emit('setJwt', {
+      requestId: 'any',
+      jwt,
+    });
+  };
 }
 
 export default SocketClient;

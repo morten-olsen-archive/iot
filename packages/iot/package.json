@@ -7,5 +7,14 @@
     "type": "github",
     "url": "https://github.com/morten-olsen/iot"
   },
-  "gitHead": "05af95b64ec2e56fec0e6f7f5452ee11390e95ee"
+  "gitHead": "05af95b64ec2e56fec0e6f7f5452ee11390e95ee",
+  "dependencies": {
+    "axios": "^0.20.0",
+    "jsonwebtoken": "^8.5.1",
+    "jwk-to-pem": "^2.0.4"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/jwk-to-pem": "^2.0.0"
+  }
 }

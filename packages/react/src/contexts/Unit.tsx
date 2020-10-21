@@ -35,8 +35,8 @@ class ReactUnit extends Unit {
     this.emitter.emit('changes', changes);
   };
 
-  setValues = async (changes: ChangeRequest) => {
-    this.change(changes);
+  setValues: Unit['change'] = async (changes, options) => {
+    this.change(changes, options);
   };
 }
 

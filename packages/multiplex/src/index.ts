@@ -11,9 +11,13 @@ class Multiplex extends Unit {
   onSetup = async () => {
     await Promise.all(
       this._units.map((u) =>
-        u.setup(this.store, {
-          setValues: this.change,
-        })
+        u.setup(
+          this.store,
+          {
+            setValues: this.change,
+          },
+          this.config
+        )
       )
     );
   };

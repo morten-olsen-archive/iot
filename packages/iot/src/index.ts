@@ -5,6 +5,7 @@ import Changes from './Changes';
 import Store from './Store';
 import Iql from './Iql';
 import NullUnit from './NullUnit';
+import UnitConfig from './UnitConfig';
 
 export type iql = (key: string) => Iql;
 
@@ -17,6 +18,7 @@ export {
   AllowedValues,
   Iql,
   NullUnit,
+  UnitConfig,
 };
 
 export default Unit;

@@ -19,7 +19,7 @@ class StorageDB {
   setup = () => {
     if (!this._setup) {
       const run = async () => {
-        const builder = lovefield.schema.create('iot', 2);
+        const builder = lovefield.schema.create('iot', 3);
         builder
           .createTable('files')
           .addColumn('location', lovefield.Type.STRING)
@@ -35,7 +35,6 @@ class StorageDB {
         builder
           .createTable('devices')
           .addColumn('home', lovefield.Type.STRING)
-          .addColumn('room', lovefield.Type.STRING)
           .addColumn('key', lovefield.Type.STRING)
           .addColumn('baseKey', lovefield.Type.STRING)
           .addColumn('type', lovefield.Type.STRING)
