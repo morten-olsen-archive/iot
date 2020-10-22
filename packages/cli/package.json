@@ -1,0 +1,28 @@
+{
+  "name": "@morten-olsen/iot-cli",
+  "version": "1.0.0-alpha.16",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "bin": {
+    "iot-cli": "bin/cli.js"
+  },
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/morten-olsen/iot"
+  },
+  "dependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-typescript": "^7.12.1",
+    "@morten-olsen/iot": "^1.0.0-alpha.16",
+    "@morten-olsen/iot-root": "^1.0.0-alpha.16",
+    "@morten-olsen/iot-socket-client": "^1.0.0-alpha.16",
+    "@vercel/ncc": "^0.24.1",
+    "babel-loader": "^8.1.0",
+    "commander": "^6.1.0",
+    "webpack": "^5.2.0"
+  },
+  "gitHead": "05af95b64ec2e56fec0e6f7f5452ee11390e95ee"
+}

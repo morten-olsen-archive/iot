@@ -15,6 +15,7 @@ class SocketServer extends Unit {
   onSetup = async () => {
     const server = io(this._server, {
       origins: '*:*',
+      serveClient: false,
     });
     server.origins('*:*');
 
