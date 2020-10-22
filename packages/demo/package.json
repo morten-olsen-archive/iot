@@ -1,0 +1,23 @@
+{
+  "name": "@morten-olsen/iot-demo",
+  "version": "1.0.0-alpha.16",
+  "main": "dist/index.js",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "root": "iot-cli bundle-root src/root.ts && node build/root/main.js",
+    "socket": "iot-cli bundle-socket src/socket.ts && SOCKET_HOST=http://localhost:3000 node build/socket/main.js"
+  },
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/morten-olsen/iot"
+  },
+  "dependencies": {
+    "@morten-olsen/iot": "^1.0.0-alpha.16",
+    "@morten-olsen/iot-cli": "^1.0.0-alpha.16",
+    "@morten-olsen/iot-multiplex": "^1.0.0-alpha.16",
+    "@morten-olsen/iot-socket-server": "^1.0.0-alpha.16",
+    "socket.io-client": "^2.3.1"
+  },
+  "gitHead": "05af95b64ec2e56fec0e6f7f5452ee11390e95ee"
+}

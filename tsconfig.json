@@ -26,6 +26,8 @@
   }, {
     "path": "packages/socket-client"
   }, {
+    "path": "packages/cli"
+  }, {
     "path": "packages/react"
   }, {
     "path": "packages/ui"
