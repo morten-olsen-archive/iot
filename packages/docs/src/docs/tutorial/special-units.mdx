@@ -1,0 +1,80 @@
+import { Item } from '../components';
+
+# Special units
+
+Well calling them "special" is incorrect, as these are just regular `Unit`s, but they do have specialized purposes to help you build a complete home setup. Here are a few of the most important `Units` to know about when you are creating you server 
+
+<Item title="Root" overline="@morten-olsen/iot-root">
+  Most likely you will not have to deal with this unit if you are using the cli to build your server, but this is always the first unit in the stack, the one that actually holds the underlaying key value store.
+</Item>
+<Item title="Multiplexer" overline="@morten-olsen/iot-multiplex">
+  This, as we just saw, is a unit that allows you to combine multible single units into one unit.
+</Item>
+<Item title="Initial" overline="@morten-olsen/iot-initial">
+  This unit allows you to setup a state before setting up you units
+</Item>
+<Item title="Filter" overline="@morten-olsen/iot-filter">
+  This allows you to filter keys based on allow/disallow regexes, so any unit after that only sees the filtered result
+</Item>
+<Item title="Socket" overline="@morten-olsen/iot-socket">
+  This unit creates a socket.io server, so units can be connected over the network or the internet
+</Item>
+<Item title="Device" overline="@morten-olsen/iot-device">
+  This unit is simular to the socket unit but uses protocol buffer and zeroconfig to easily allow devices to connect and interact with the shared state
+</Item>
+<Item title="Playground" overline="@morten-olsen/iot-playground">
+  This unit allows you to sync a project created in "playground" on this page, directly to your own server
+</Item>
+<Item title="Guest access" overline="@morten-olsen/iot-guest-access">
+  This unit allows you to create temperary JWT login tokens for guests to access you server
+</Item>
+<Item title="JWT" overline="@morten-olsen/iot-jwt">
+  This unit, and the JWT/JWKS concept which underpins the security we will come back to later
+</Item>
+
+So now that we have meet a few of the units, lets try to look at a more complex server setup
+
+```javascript
+# Root server
+# $ iot-cli build-root ./root-server.js
+const socket = new SocketServer();
+
+# Device server
+# $ iot-cli build-socket ./device-server.js
+const hue = new Hue();
+const tado = new Tado();
+const multiplex = new Multiplex([ tado, hue ]);
+export default multiplex
+
+# Residents server
+# $ iot-cli build-socket ./residents-server.js
+const socket = new SocketServer({ requireAuthentication: true });
+export default socket;
+
+# Guest server
+# $ iot-cli build-socket ./guest-server.js
+const socket = new SocketServer({ guestAccess: true });
+const filter = new Filter(socket2, {
+  allow: [/^lights\..*/],
+});
+export default filter;
+
+# Automation server
+# $ iot-cli build-socket ./automation-server.js
+const automation1 = new CustomUnit1();
+const automation2 = new CustomUnit2();
+const multiplex = new Multiplex([ automation1, automation2 ]);
+export default multiplex;
+```
+
+So in this example we have split into 5 different servers. This may sound like a lot, but if you are running for instance a docker based setup this does come with some advantages.
+
+**The first** server is our root server, which will hold our shared state. Ideally we want this server to be really simple to insure stability. With it isolated we can restart any other part without restarting the root server, losing our state. We also add a socket server for the other servers to connect to. We don't add any protection for now, since in our not real example it connectes only to the other servers, with no external access other than that.
+
+**The second** server is our device servers. We add the devices together on their own server so we can easily restart those should something start to act up.
+
+**The third** is the one we will be connecting to for the interface. This just exposes a socket which require authentication.
+
+**The fourth** is the guest access, which are simular to the one we are using except that it uses the guest access mode for short term logins, and has a filter unit so users connected to that socket only can see and modify the lights.
+
+**The fifth** is our automation server where all our custom automations are running.

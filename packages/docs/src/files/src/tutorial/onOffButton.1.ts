@@ -11,4 +11,4 @@ class OnOffButtonUnit extends Unit {
   };
 }
 
-export default OnOffButtonUnit;
+export default new OnOffButtonUnit();

@@ -1,7 +1,7 @@
-import { Devices, Preview, RevertFile, Stop } from '../components';
+import { Devices, Preview, RevertFile, Stop, Next } from '../components';
 
 <Stop />
-<RevertFile location="/tutorial/OnOffButton.ts" version="1" />
+<RevertFile location="/tutorial/onOffButton.ts" version="1" />
 
 # Creating you first automation
 
@@ -19,7 +19,7 @@ And use those events to turn "Light 1" on and off. You can try to press the "...
 
 So lets start to look at the code to make those buttons work
 
-<Preview file="/tutorial/OnOffButton.ts" />
+<Preview file="/tutorial/onOffButton.ts" />
 
 Press the "play" button on the top left of the example to start the unit, then you can try clicking the "..." on the buttons. The light should toggle on and off.
 
@@ -28,3 +28,5 @@ So the first thing we need to do is to `export default` a class which extends `U
 Our `onChange` function are passed two arguments, `change` which contains all the keys that changed, what they changed from and what they changed to. We also get an `iql` object named `key`.
 
 `Iql` is `internet-of-things-query-language` and is a very simple query builder for querying a state change. in our case we have two checks using the `key(theKey).became(expectedValue).$` to test if `button.0` or `button.1` where pressed. If they where we use `this.change({ someKey, newValue })` to update the on state of our light.
+
+<Next title="Another unit" to="./second-unit.mdx" />

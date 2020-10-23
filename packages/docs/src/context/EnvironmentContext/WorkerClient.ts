@@ -97,8 +97,7 @@ class WorkerUnit {
       return module.exports;
     };
 
-    const UnitClass = require('./')(main).default;
-    const unit = new UnitClass() as Unit;
+    const unit = require('./')(main).default as Unit;
     await unit.setup(store, {
       setValues: this.change,
     });

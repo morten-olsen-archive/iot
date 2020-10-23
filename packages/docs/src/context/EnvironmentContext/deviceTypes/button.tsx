@@ -1,5 +1,5 @@
 import DeviceType from '../DeviceType';
-import { Button } from '@morten-olsen/iot-ui';
+import { devices } from '@morten-olsen/iot-ui';
 
 const button: DeviceType = {
   name: 'Generic button',
@@ -17,7 +17,7 @@ const button: DeviceType = {
     name: `${baseKey}.name`,
     pressed: `${baseKey}.pressed`,
   }),
-  component: Button,
+  component: devices.GenericButton,
 };
 
 export default button;

@@ -75,6 +75,9 @@ class FileSystem {
   };
 
   public restoreFile = (location: string, version: string) => {
+    if (!this._layer0[location] || !this._layer0[location][version]) {
+      throw new Error(`${location} in version ${version} not found`);
+    }
     const content = this._layer0[location][version];
     this.setFile(location, content);
   };
@@ -99,9 +102,6 @@ class FileSystem {
   };
 
   public setupLayer1 = async () => {
-    Object.entries(this._layer0).forEach(([location, versions]) => {
-      // this.setFile(location, versions['1']);
-    });
     await storage.setup();
     const dbFiles = await storage.getFiles();
     Object.entries(dbFiles).forEach(([, { location, content }]: any) => {

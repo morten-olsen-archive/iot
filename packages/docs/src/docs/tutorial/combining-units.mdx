@@ -1,0 +1,28 @@
+import { Devices, Preview, RevertFile, Stop, WarpButton, Next } from '../components';
+
+<Stop />
+<RevertFile location="/tutorial/onOffButton.ts" version="1" />
+<RevertFile location="/tutorial/motionSensor.ts" version="1" />
+<RevertFile location="/tutorial/combinedUnits.ts" version="1" />
+
+# Combining units
+
+Okay we have now tried to create two different units, but we want them to run at the same time; _time to introduce the concept of combining units._
+
+So we will now focus on both our buttons, as well as our motion sensor
+
+<Devices onlyBaseKeys={['motionSensors.0', 'buttons.0', 'buttons.1']} />
+
+And we are still controlling our "Light 1"
+
+<Devices onlyBaseKeys={['lights.0']} />
+
+So now we can use a special `Unit` called a multiplex, which allows us to combine multible different units into one single unit, by supplying them as an array to its constructor.
+
+<Preview file="/tutorial/combinedUnits.ts" />
+
+Now try to run the example above, and indeed both our buttons and our motion sensor is working at the same time
+
+<WarpButton label="5 min" amount={5 * 60 * 1000} />
+
+<Next title="Special units" to="./special-units.mdx" />

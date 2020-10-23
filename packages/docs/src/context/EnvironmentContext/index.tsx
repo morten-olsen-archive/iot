@@ -46,9 +46,7 @@ const EnvironmentContext = createContext<EnvironmentContextValue>(
   undefined as any
 );
 
-const EnvironmentProvider: React.FC<ProviderProps> = ({
-  children,
-}) => {
+const EnvironmentProvider: React.FC<ProviderProps> = ({ children }) => {
   const fileSystem = useFileSystem();
   const [ready, setReady] = useState(false);
   const [timeWarp, setTimeWarp] = useState(0);

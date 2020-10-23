@@ -28,4 +28,4 @@ class MotionSensorUnit extends Unit {
   };
 }
 
-export default MotionSensorUnit;
+export default new MotionSensorUnit();

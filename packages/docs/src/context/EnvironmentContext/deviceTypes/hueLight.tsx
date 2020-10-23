@@ -1,5 +1,5 @@
 import DeviceType from '../DeviceType';
-import { HueLight } from '@morten-olsen/iot-ui';
+import { devices } from '@morten-olsen/iot-ui';
 
 const hueLight: DeviceType = {
   name: 'Philips Hue Light',
@@ -17,7 +17,7 @@ const hueLight: DeviceType = {
     name: `${baseKey}.name`,
     on: `${baseKey}.on`,
   }),
-  component: HueLight,
+  component: devices.HueLight,
 };
 
 export default hueLight;

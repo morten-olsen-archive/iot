@@ -1,0 +1,14 @@
+import { Next, Devices, Preview, RevertFile, Stop, WarpButton } from '../components';
+
+<Stop />
+<RevertFile location="/tutorial/motionSensor.ts" version="1" />
+
+<Devices onlyBaseKeys={['motionSensors.0']} />
+
+<Devices onlyBaseKeys={['lights.0']} />
+
+<Preview file="/tutorial/motionSensor.ts" />
+
+<WarpButton label="5 min" amount={5 * 60 * 1000} />
+
+<Next title="Combining units" to="./combining-units.mdx" />

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useKeys, useChange } from '@morten-olsen/iot-react';
-import { Icon } from '../Row';
-import Device from '../Device';
+import { Icon } from '../../Row';
+import Device from '../../Device';
 
 interface Props {
   room?: string;
