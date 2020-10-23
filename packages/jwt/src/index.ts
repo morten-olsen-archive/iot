@@ -2,8 +2,9 @@ import Unit, { Changes } from '@morten-olsen/iot';
 
 class Jwt extends Unit {
   private _unit: Unit;
+  private _jwksUri?: string;
 
-  constructor(unit: Unit) {
+  constructor(unit: Unit, jwksUri?: string) {
     super();
     this._unit = unit;
   }
@@ -14,7 +15,10 @@ class Jwt extends Unit {
       {
         setValues: this.setValues,
       },
-      this.config
+      {
+        jwksUri: this._jwksUri,
+        ...this.config,
+      }
     );
   };
 

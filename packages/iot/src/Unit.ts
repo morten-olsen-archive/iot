@@ -10,10 +10,19 @@ abstract class Unit {
   private _store?: Store;
   private _api?: Api;
   private _config: UnitConfig = {};
+  private _jwt?: string;
   private _jwksContext?: JwksContext;
 
   constructor(actor?: string) {
     this._actor = actor || this.constructor.name;
+  }
+
+  set jwt(value: string | undefined) {
+    this._jwt = value;
+  }
+
+  get jwt() {
+    return this._jwt;
   }
 
   setup = async (store: Store, api: Api, config?: UnitConfig) => {
@@ -90,6 +99,7 @@ abstract class Unit {
   ) => {
     await this.api.setValues(changes, {
       actor: this._actor,
+      jwt: this._jwt,
       ...options,
     });
   };

@@ -16,7 +16,7 @@ class JwksContext {
     }
     if (!this._keys) {
       const { data: keys } = await axios.get(this._uri);
-      this._keys = keys;
+      this._keys = keys.keys;
     }
     const key = this._keys.find((k: any) => k.kid === header.kid);
     if (!key) {

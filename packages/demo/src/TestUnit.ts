@@ -20,7 +20,7 @@ class TestUnit extends Unit {
   };
 
   onChange: Unit['onChange'] = async (changes) => {
-    console.log(this._name, 'changes', changes);
+    console.log(this._name, 'changes', changes, this.store);
   };
 }
 
