@@ -1,5 +1,9 @@
 import Unit, { Changes, ChangeRequest } from '@morten-olsen/iot';
 
+interface Options {
+  jwksUri?: string;
+}
+
 class Master extends Unit {
   private _unit: Unit;
 
@@ -8,16 +12,23 @@ class Master extends Unit {
     this._unit = unit;
   }
 
-  initialize = async () => {
+  initialize = async (options: Options = {}) => {
     await this.setup(
       {},
       {
         setValues: this.process,
+      },
+      {
+        jwksUri: options.jwksUri,
       }
     );
-    this._unit.setup(this.store, {
-      setValues: this.process,
-    });
+    this._unit.setup(
+      this.store,
+      {
+        setValues: this.process,
+      },
+      this.config
+    );
   };
 
   process = async (changeRequest: ChangeRequest) => {

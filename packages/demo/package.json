@@ -5,7 +5,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "root": "iot-cli bundle-root src/root.ts && node build/root/main.js",
+    "root": "iot-cli bundle-root src/root.ts && JWKS_URI=https://iot-demo.au.auth0.com/.well-known/jwks.json node build/root/main.js",
     "socket": "iot-cli bundle-socket src/socket.ts && SOCKET_HOST=http://localhost:3000 node build/socket/main.js"
   },
   "repository": {

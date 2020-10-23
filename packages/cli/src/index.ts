@@ -1,5 +1,7 @@
 import commander from 'commander';
 import path from 'path';
+import Unit from '@morten-olsen/iot';
+import SocketClient from '@morten-olsen/iot-socket-client';
 import webpack from 'webpack';
 import createWebpack from './createWebpack';
 
@@ -19,6 +21,23 @@ const bundle = (unitLocation: string, entryFile: string, output: string) => {
     }
   });
 };
+
+const setSocket = commander.command('set-socket <host> <key> <value>');
+setSocket.option('--jwt <token>');
+setSocket.action((host, key, value, { jwt }) => {
+  class SingleUseUnit extends Unit {
+    onSetup = async () => {
+      this.jwt = jwt;
+      await this.change({
+        [key]: value,
+      });
+    };
+    onChange = async () => {};
+  }
+
+  const singleUseUnit = new SingleUseUnit();
+  new SocketClient(singleUseUnit, host, jwt);
+});
 
 const bundleRoot = commander.command('bundle-root <unitFile>');
 bundleRoot.action((unitLocation) => {
