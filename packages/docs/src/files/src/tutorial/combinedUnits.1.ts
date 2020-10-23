@@ -1,6 +1,6 @@
 import Multiplex from '@morten-olsen/iot-multiplex';
-import onOffButton from './OnOffButton';
-import motionSensor from './MotionSensor';
+import onOffButton from './onOffButton';
+import motionSensor from './motionSensor';
 
 const multiplex = new Multiplex([onOffButton, motionSensor]);
 
