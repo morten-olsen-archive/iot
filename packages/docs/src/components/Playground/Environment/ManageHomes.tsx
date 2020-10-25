@@ -22,9 +22,11 @@ const ManageHomes = () => {
 
   return (
     <>
-      <Row 
-      left={<IconCell name="home" />}
-        title={name} onPress={() => setVisible(true)} />
+      <Row
+        left={<IconCell name="home" />}
+        title={name}
+        onPress={() => setVisible(true)}
+      />
       <Modal
         title="Select home"
         visible={visible}
@@ -40,7 +42,10 @@ const ManageHomes = () => {
         ))}
         <hr />
         <Row>
-          <input value={newName} onChange={evt => setNewName(evt.target.value)} />
+          <input
+            value={newName}
+            onChange={(evt) => setNewName(evt.target.value)}
+          />
           <button onClick={create}>Create</button>
         </Row>
       </Modal>

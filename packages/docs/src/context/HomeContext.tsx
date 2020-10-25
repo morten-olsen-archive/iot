@@ -1,4 +1,10 @@
-import React, { createContext, useMemo, ReactNode, useCallback, useState } from 'react';
+import React, {
+  createContext,
+  useMemo,
+  ReactNode,
+  useCallback,
+  useState,
+} from 'react';
 import { nanoid } from 'nanoid';
 import { useHomes } from '../hooks/homes';
 import Device from '../context/EnvironmentContext/Device';
@@ -36,7 +42,11 @@ const HomeContext = createContext<HomeContextValue>({
   selectHome: noProvider,
 });
 
-const HomeProvider: React.FC<ProviderProps> = ({ homeKey, children, allowEdit }) => {
+const HomeProvider: React.FC<ProviderProps> = ({
+  homeKey,
+  children,
+  allowEdit,
+}) => {
   const [localHomeKey, setLocalHomeKey] = useState(homeKey);
   const homes = useHomes();
   const name = useMemo(() => homes.homes[localHomeKey], [

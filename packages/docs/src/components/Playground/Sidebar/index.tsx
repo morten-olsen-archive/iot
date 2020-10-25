@@ -5,7 +5,7 @@ import { useModels } from '../../../hooks/models';
 import { useDownload } from '../../../hooks/export';
 import { Modal, Row, IconCell } from '@morten-olsen/iot-ui';
 import Folder from './Folder';
-import {useEnvironment} from '../../../hooks/environment';
+import { useEnvironment } from '../../../hooks/environment';
 
 interface Props {
   selectedModel?: editor.ITextModel;
@@ -51,7 +51,14 @@ const Sidebar: React.FC<Props> = ({ selectedModel, selectModel, cwd }) => {
       <Row
         left={
           <>
-            {running && <IconCell onPress={() => { download(cwd, running); }} name="download" />}
+            {running && (
+              <IconCell
+                onPress={() => {
+                  download(cwd, running);
+                }}
+                name="download"
+              />
+            )}
           </>
         }
       />

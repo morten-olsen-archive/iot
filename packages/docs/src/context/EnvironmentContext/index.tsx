@@ -20,6 +20,7 @@ import { useDevices } from '../../hooks/home';
 import hueLight from './deviceTypes/hueLight';
 import button from './deviceTypes/button';
 import motionSensor from './deviceTypes/motionSensor';
+import philipsHueDimmerSwitch from './deviceTypes/hueDimmerSwitch';
 
 interface EnvironmentContextValue {
   ready: boolean;
@@ -40,6 +41,7 @@ const deviceTypes: EnvironmentContextValue['deviceTypes'] = {
   hueLight,
   button,
   motionSensor,
+  philipsHueDimmerSwitch,
 };
 
 const EnvironmentContext = createContext<EnvironmentContextValue>(

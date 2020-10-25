@@ -9,9 +9,9 @@ Every integration into our home is a `Unit`in `@morten-olsen/iot`, so lets start
 
 The `Unit` we will be creating is a rather simple one, which reacts to presses on the on and off buttons in the living room
 
-<Devices onlyBaseKeys={['buttons.0', 'buttons.1']} />
+<Devices onlyBaseKeys={['dimmerSwitches.0']} />
 
-And use those events to turn "Light 1" on and off. You can try to press the "..." to confirm that the buttons indeed does nothing right now.
+And use those events to turn "Light 1" on and off. You can try to press the buttons to confirm that they indeed does nothing right now.
 
 <Devices onlyBaseKeys={['lights.0']} />
 
@@ -21,7 +21,7 @@ So lets start to look at the code to make those buttons work
 
 <Preview file="/tutorial/onOffButton.ts" />
 
-Press the "play" button on the top left of the example to start the unit, then you can try clicking the "..." on the buttons. The light should toggle on and off.
+Press the "play" button on the top left of the example to start the unit, then you can try clicking the I and O buttons. The light should toggle on and off.
 
 So the first thing we need to do is to `export default` a class which extends `Unit`. A `Unit` can implement an `onChange` function, which are the one we want to use to react to our button presses.
 

@@ -23,7 +23,15 @@ const Wrapper = styled(Cell)`
 
 const Touch = styled.TouchableOpacity``;
 
-const Icon: React.FC<Props> = ({ name, onPress, onPressIn, onPressOut, theme, color, size }) => {
+const Icon: React.FC<Props> = ({
+  name,
+  onPress,
+  onPressIn,
+  onPressOut,
+  theme,
+  color,
+  size,
+}) => {
   const comp = (
     <Wrapper>
       <Feather name={name} color={color} size={size || theme.sizes.icons} />
@@ -31,7 +39,11 @@ const Icon: React.FC<Props> = ({ name, onPress, onPressIn, onPressOut, theme, co
   );
 
   if (onPress || onPressIn || onPressOut) {
-    return <Touch onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut}>{comp}</Touch>;
+    return (
+      <Touch onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut}>
+        {comp}
+      </Touch>
+    );
   }
   return comp;
 };

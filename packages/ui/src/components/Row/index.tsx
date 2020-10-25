@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import Color from 'color';
 import styled from 'styled-components/native';
 import Cell from './Cell';
 import Icon from './Icon';
@@ -16,8 +17,8 @@ interface Props {
   onPress?: () => void;
   children?: ReactNode;
   selected?: boolean;
-  background?: boolean;
   compact?: boolean;
+  background?: string;
 }
 
 const Unread = styled.View`
@@ -33,14 +34,15 @@ const Touch = styled.TouchableOpacity``;
 const Wrapper = styled(Cell)<{
   selected?: boolean;
   theme: Theme;
+  background?: string;
   compact?: boolean;
 }>`
   flex-direction: row;
   ${({ compact }) => (compact ? 'padding-top: 0;' : '')}
   ${({ compact }) => (compact ? 'padding-bottom: 0;' : '')}
   border-radius: ${({ theme }) => theme.sizes.corner}px;
-  background: ${({ theme, selected }) =>
-    selected ? theme.colors.backgroundSelected : 'transparent'};
+  background: ${({ theme, selected, background }) =>
+    background || (selected ? theme.colors.backgroundSelected : 'transparent')};
 `;
 
 const Main = styled(Cell)`
@@ -56,20 +58,21 @@ const Row: React.FC<Props> = ({
   description,
   children,
   onPress,
-  background,
   unread,
   selected,
   compact,
+  background = '#fff',
 }) => {
+  const color = Color(background).isDark() ? '#fff' : '#000';
   const comp = (
     <Wrapper background={background} selected={selected} compact={!!compact}>
       {unread && <Unread />}
       {left}
       <Main>
-        {overline && nodeOrText(overline, Overline)}
-        {title && nodeOrText(title, Body1)}
-        {description && nodeOrText(description, Body2)}
-        {children && nodeOrText(children, Body1)}
+        {overline && nodeOrText(overline, Overline, { color })}
+        {title && nodeOrText(title, Body1, { color })}
+        {description && nodeOrText(description, Body2, { color })}
+        {children && nodeOrText(children, Body1, { color })}
       </Main>
       {right}
     </Wrapper>

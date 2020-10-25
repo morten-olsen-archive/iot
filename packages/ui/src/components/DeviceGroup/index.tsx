@@ -9,6 +9,7 @@ interface Props {
 
 const Wrapper = styled.View<{ theme: Theme }>`
   flex-direction: row;
+  flex-wrap: wrap;
 `;
 
 const DeviceGroup: React.FC<Props> = ({ children }) => (

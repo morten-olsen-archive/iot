@@ -29,10 +29,7 @@ const HomesProvider: React.FC = ({ children }) => {
       ...newHomes,
       demo: 'Demo home',
     });
-    setDevices([
-      ...newDevices,
-      ...demo,
-    ]);
+    setDevices([...newDevices, ...demo]);
   };
 
   const setDevice = useCallback(async (device: Device) => {

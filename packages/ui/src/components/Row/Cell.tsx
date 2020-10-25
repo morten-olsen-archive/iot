@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { Theme } from '../../theme';
 
 const Cell = styled.View<{
-  background?: boolean;
+  background?: string;
   selected?: boolean;
   theme: Theme;
 }>`

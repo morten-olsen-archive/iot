@@ -11,9 +11,7 @@ interface Props {
 const WarpButton: React.FC<Props> = ({ label, amount }) => {
   const { warpTime } = useEnvironment();
 
-  return (
-    <Button title={label} onPress={() => warpTime(amount)} />
-  );
+  return <Button title={label} onPress={() => warpTime(amount)} />;
 };
 
 export default WarpButton;
