@@ -4,7 +4,10 @@ import HueMotionSensor from './index';
 export const Normal = () => (
   <HueMotionSensor
     room="Kitchen"
-    channels={{ name: 'motionSensors.0.name', motion: 'motionSensors.0.motion' }}
+    channels={{
+      name: 'motionSensors.0.name',
+      motion: 'motionSensors.0.motion',
+    }}
   />
 );
 

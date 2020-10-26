@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components/native';
-import { Feather } from '@expo/vector-icons';
-import { useKeys, useChange } from '@morten-olsen/iot-react';
+import { useKeys } from '@morten-olsen/iot-react';
 import Device from '../../Device';
 
 interface Props {
@@ -34,8 +33,7 @@ const SensorEye = styled.View`
   border-radius: 50%;
 `;
 
-const Button = styled.TouchableOpacity`
-`;
+const Button = styled.TouchableOpacity``;
 
 const Sensor: React.FC<SensorProps> = ({ onPress }) => (
   <Button onPress={onPress}>
@@ -46,15 +44,11 @@ const Sensor: React.FC<SensorProps> = ({ onPress }) => (
 );
 
 const HueMotionSensor: React.FC<Props> = ({ room, channels }) => {
-  const keys = useKeys(channels);
-  const change = useChange();
-  const onPress = useCallback(
-    () => {
-      change({ [channels.motion]: true });
-      change({ [channels.motion]: false });
-    },
-    [change, channels.motion]
-  );
+  const [keys, change] = useKeys(channels);
+  const onPress = useCallback(async () => {
+    await change({ motion: true });
+    await change({ motion: false });
+  }, [change]);
   return (
     <Device
       name={(keys.name?.current as string) || 'Unknown motion sensor'}
@@ -67,4 +61,3 @@ const HueMotionSensor: React.FC<Props> = ({ room, channels }) => {
 export { Props };
 
 export default HueMotionSensor;
-

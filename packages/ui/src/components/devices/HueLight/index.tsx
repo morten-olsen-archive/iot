@@ -2,12 +2,13 @@ import React from 'react';
 import styled from 'styled-components/native';
 import Color from 'color';
 import { Feather } from '@expo/vector-icons';
-import { useKeys, useChange } from '@morten-olsen/iot-react';
+import { useKeys } from '@morten-olsen/iot-react';
 import { Cell } from '../../Row';
 import Device from '../../Device';
 
 interface Props {
   room?: string;
+  name?: string;
   onRemove?: () => void;
   channels: {
     name: string;
@@ -30,9 +31,8 @@ const Wrapper = styled.TouchableOpacity<{
   border-radius: 50%;
 `;
 
-const HueLight: React.FC<Props> = ({ channels, room, onRemove }) => {
-  const keys = useKeys(channels);
-  const change = useChange();
+const HueLight: React.FC<Props> = ({ name, channels, room, onRemove }) => {
+  const [keys, change] = useKeys(channels);
   const on = keys.on?.current;
   const hue = keys.hue?.current;
   const saturation = keys.saturation?.current;
@@ -46,7 +46,7 @@ const HueLight: React.FC<Props> = ({ channels, room, onRemove }) => {
   return (
     <Device
       room={room}
-      name={keys.name?.current as any}
+      name={name || (keys.name?.current as string)}
       background={color}
       glow={!!on}
       onRemove={onRemove}
@@ -55,7 +55,7 @@ const HueLight: React.FC<Props> = ({ channels, room, onRemove }) => {
           <Wrapper
             on={!!on}
             color={color}
-            onPress={() => change({ [channels.on]: !keys.on?.current })}
+            onPress={() => change({ on: !keys.on?.current })}
           >
             <Feather
               size={15}

@@ -1,14 +1,14 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components/native';
 import { Feather } from '@expo/vector-icons';
-import { useKeys, useChange } from '@morten-olsen/iot-react';
+import { useKeys, GroupKey } from '@morten-olsen/iot-react';
 import Device from '../../Device';
 
 interface Props {
   room: string;
   channels: {
-    name: string;
-    pressed: string;
+    name: string | GroupKey;
+    pressed: string | GroupKey;
   };
 }
 
@@ -70,14 +70,13 @@ const Switch: React.FC<SwitchProps> = ({ onPress }) => (
 );
 
 const HueLightSwitch: React.FC<Props> = ({ room, channels }) => {
-  const keys = useKeys(channels);
-  const change = useChange();
+  const [keys, change] = useKeys(channels);
   const onPress = useCallback(
     (name: string) => {
-      change({ [channels.pressed]: name });
-      change({ [channels.pressed]: undefined });
+      change({ pressed: name });
+      change({ pressed: undefined });
     },
-    [change, channels.pressed]
+    [change]
   );
   return (
     <Device
