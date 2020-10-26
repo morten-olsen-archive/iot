@@ -1,5 +1,5 @@
 import React from 'react';
-import { useKeys, useChange } from '@morten-olsen/iot-react';
+import { useKeys } from '@morten-olsen/iot-react';
 import { Icon } from '../../Row';
 import Device from '../../Device';
 
@@ -13,8 +13,7 @@ interface Props {
 }
 
 const Button: React.FC<Props> = ({ channels, room, onRemove }) => {
-  const keys = useKeys(channels);
-  const change = useChange();
+  const [keys, change] = useKeys(channels);
 
   return (
     <Device
@@ -23,8 +22,8 @@ const Button: React.FC<Props> = ({ channels, room, onRemove }) => {
       actions={
         <Icon
           name="target"
-          onPressIn={() => change({ [channels.pressed]: true })}
-          onPressOut={() => change({ [channels.pressed]: false })}
+          onPressIn={() => change({ pressed: true })}
+          onPressOut={() => change({ pressed: false })}
         />
       }
       name={keys.name?.current as any}

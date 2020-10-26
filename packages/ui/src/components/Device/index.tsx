@@ -51,7 +51,9 @@ const Device: React.FC<Props> = ({
         right={
           <>
             {actions}
-            {onRemove && <Icon name="trash" color="#e74c3c" onPress={onRemove} />}
+            {onRemove && (
+              <Icon name="trash" color="#e74c3c" onPress={onRemove} />
+            )}
           </>
         }
       />

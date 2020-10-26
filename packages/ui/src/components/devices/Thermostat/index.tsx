@@ -1,9 +1,8 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
 import Color from 'color';
-import { Feather } from '@expo/vector-icons';
-import { useKeys, useChange } from '@morten-olsen/iot-react';
-import { Body1, Overline } from '../../../typography';
+import { useKeys } from '@morten-olsen/iot-react';
+import { Body1 } from '../../../typography';
 import Device from '../../Device';
 
 interface Props {
@@ -31,7 +30,6 @@ const ThermostatOuter = styled.View`
   margin-left: 10px;
 `;
 
-
 const ThermostatView: React.FC<SensorProps> = ({ target, current }) => (
   <ThermostatOuter>
     <Body1>{current}°</Body1>
@@ -49,10 +47,9 @@ const getBackground = (current: number, target: number) => {
 };
 
 const Thermostat: React.FC<Props> = ({ room, channels }) => {
-  const keys = useKeys(channels);
-  const change = useChange();
-  const current = keys.currentTemperatur?.current as number || 0;
-  const target = keys.targetTemperatur?.current as number || 0;
+  const [keys] = useKeys(channels);
+  const current = (keys.currentTemperatur?.current as number) || 0;
+  const target = (keys.targetTemperatur?.current as number) || 0;
 
   const background = getBackground(current, target);
 
@@ -69,4 +66,3 @@ const Thermostat: React.FC<Props> = ({ room, channels }) => {
 export { Props };
 
 export default Thermostat;
-
