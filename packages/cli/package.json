@@ -1,6 +1,6 @@
 {
   "name": "@morten-olsen/iot-cli",
-  "version": "1.0.0-alpha.24",
+  "version": "1.0.0-alpha.25",
   "main": "dist/index.js",
   "license": "MIT",
   "bin": {
@@ -16,9 +16,9 @@
     "@babel/plugin-transform-runtime": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-typescript": "^7.12.1",
-    "@morten-olsen/iot": "^1.0.0-alpha.24",
-    "@morten-olsen/iot-root": "^1.0.0-alpha.24",
-    "@morten-olsen/iot-socket-client": "^1.0.0-alpha.24",
+    "@morten-olsen/iot": "^1.0.0-alpha.25",
+    "@morten-olsen/iot-root": "^1.0.0-alpha.25",
+    "@morten-olsen/iot-socket-client": "^1.0.0-alpha.25",
     "@vercel/ncc": "^0.24.1",
     "babel-loader": "^8.1.0",
     "commander": "^6.1.0",

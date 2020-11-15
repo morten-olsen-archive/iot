@@ -1,6 +1,6 @@
 {
   "name": "@morten-olsen/iot-multiplex",
-  "version": "1.0.0-alpha.24",
+  "version": "1.0.0-alpha.25",
   "main": "dist/index.js",
   "license": "MIT",
   "repository": {
@@ -8,7 +8,7 @@
     "url": "https://github.com/morten-olsen/iot"
   },
   "dependencies": {
-    "@morten-olsen/iot": "^1.0.0-alpha.24"
+    "@morten-olsen/iot": "^1.0.0-alpha.25"
   },
   "gitHead": "05af95b64ec2e56fec0e6f7f5452ee11390e95ee"
 }
