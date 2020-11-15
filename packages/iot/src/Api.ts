@@ -14,6 +14,8 @@ interface Api {
     changes: ChangeRequest,
     options: ChangeRequestOptions
   ) => Promise<void>;
+  getConfig: <Config = any>() => Promise<Config>;
+  setConfig: <Config = any>(config: Config) => Promise<void>;
 }
 
 export { ChangeRequest, ChangeRequestOptions };

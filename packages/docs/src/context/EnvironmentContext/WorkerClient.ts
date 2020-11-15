@@ -65,6 +65,7 @@ class WorkerUnit {
   };
 
   onSetup = async ({ main, files, timeWarp, store }: SetupArgs) => {
+    let config: any = {};
     this._time.warp(timeWarp);
     const require = (cwd: string) => (location: string) => {
       const module = {
@@ -100,6 +101,10 @@ class WorkerUnit {
     const unit = require('./')(main).default as Unit;
     await unit.setup(store, {
       setValues: this.change,
+      getConfig: async () => config,
+      setConfig: async (value: any) => {
+        config = value;
+      },
     });
     this._unit = unit;
   };

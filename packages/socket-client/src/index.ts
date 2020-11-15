@@ -1,6 +1,8 @@
 import Unit, { Changes } from '@morten-olsen/iot';
 import io from 'socket.io-client';
 
+let requestId = 0;
+
 class SocketClient {
   private _unit: Unit;
   private _socket: any;
@@ -18,8 +20,23 @@ class SocketClient {
   init = async ({ store }: any) => {
     await this._unit.setup(store, {
       setValues: this.change,
+      getConfig: this.getConfig,
+      setConfig: this.setConfig,
     });
   };
+
+  setConfig = async (config: any) => {
+    this._socket.emit('setConfig', config);
+  };
+
+  getConfig = <T = any>() =>
+    new Promise<T>((resolve) => {
+      const id = requestId++;
+      this._socket.once(`response=${id}`, (config: T) => {
+        resolve(config);
+      });
+      this._socket.emit('getConfig', id);
+    });
 
   onChange = async (changes: Changes) => {
     await this._unit.handleChanges(changes);

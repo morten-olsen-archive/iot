@@ -17,6 +17,8 @@ class Initial extends Unit {
       this.store,
       {
         setValues: this.change,
+        getConfig: this.getConfig,
+        setConfig: this.setConfig,
       },
       this.config
     );

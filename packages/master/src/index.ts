@@ -6,6 +6,7 @@ interface Options {
 
 class Master extends Unit {
   private _unit: Unit;
+  private _nodeConfig: any = {};
 
   constructor(unit: Unit) {
     super();
@@ -17,6 +18,8 @@ class Master extends Unit {
       {},
       {
         setValues: this.process,
+        getConfig: this._getConfig,
+        setConfig: this._setConfig,
       },
       {
         jwksUri: options.jwksUri,
@@ -26,9 +29,19 @@ class Master extends Unit {
       this.store,
       {
         setValues: this.process,
+        getConfig: this._getConfig,
+        setConfig: this._setConfig,
       },
       this.config
     );
+  };
+
+  private _getConfig = async () => {
+    return this._nodeConfig;
+  };
+
+  private _setConfig = async (config: any) => {
+    this._nodeConfig = config;
   };
 
   process = async (changeRequest: ChangeRequest) => {
