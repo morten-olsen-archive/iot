@@ -4,7 +4,7 @@ class Jwt extends Unit {
   private _unit: Unit;
   private _jwksUri?: string;
 
-  constructor(unit: Unit, jwksUri?: string) {
+  constructor(unit: Unit) {
     super();
     this._unit = unit;
   }
@@ -14,6 +14,8 @@ class Jwt extends Unit {
       this.store,
       {
         setValues: this.setValues,
+        getConfig: this.getConfig,
+        setConfig: this.setConfig,
       },
       {
         jwksUri: this._jwksUri,

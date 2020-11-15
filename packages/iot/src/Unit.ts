@@ -52,10 +52,16 @@ abstract class Unit {
 
   private get api() {
     if (!this._api) {
-      throw new Error('Calling api before setup');
+      throw new Error(`Calling api before setup on ${this.constructor.name}`);
     }
     return this._api;
   }
+
+  protected getConfig = <T = any>() => {
+    return this.api.getConfig<T>();
+  }
+
+  protected setConfig = <T = any>(config: T) => this.api.setConfig(config);
 
   protected getJwtData = async (token: string) => {
     if (!this._jwksContext) {

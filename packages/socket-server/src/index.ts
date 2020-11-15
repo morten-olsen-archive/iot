@@ -23,6 +23,8 @@ class SocketServer extends Unit {
       const client = new Client(socket);
       client.setup(this.store, {
         setValues: this.change,
+        setConfig: this.setConfig,
+        getConfig: this.getConfig,
       });
 
       socket.on('disconnect', () => {
@@ -32,6 +34,7 @@ class SocketServer extends Unit {
       this._clients.push(client);
     });
   };
+
 
   onChange = async (changes: Changes) => {
     await Promise.all(this._clients.map((c) => c.handleChanges(changes)));
