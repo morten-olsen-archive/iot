@@ -24,6 +24,8 @@
   }, {
     "path": "packages/multiplex"
   }, {
+    "path": "packages/filter"
+  }, {
     "path": "packages/socket-server"
   }, {
     "path": "packages/socket-client"
