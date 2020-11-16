@@ -73,7 +73,7 @@ const createWebpackConfig = () => {
         {
           test: /\.ts$/,
           loader: 'raw-loader',
-          include: [path.join(__dirname, 'src', 'files', 'src')],
+          include: [path.join(__dirname, 'src', 'web-files', 'src')],
         },
         {
           test: /\.(j|t)sx?$/,
@@ -82,7 +82,7 @@ const createWebpackConfig = () => {
             path.join(__dirname, './src'),
             moduleDir('react-native-markdown-display'),
           ],
-          exclude: [path.join(__dirname, 'src', 'files', 'src')],
+          exclude: [path.join(__dirname, 'src', 'web-files', 'src')],
           options: babelConfig,
         },
       ],

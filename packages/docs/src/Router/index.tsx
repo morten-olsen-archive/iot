@@ -9,6 +9,7 @@ import {
   useHistory,
   Redirect,
 } from 'react-router-dom';
+import { FilesProvider } from '../context/FilesContext';
 import { EnvironmentProvider } from '../context/EnvironmentContext';
 import { HomeProvider } from '../context/HomeContext';
 
@@ -28,13 +29,15 @@ const DocumentRoute: React.FC = () => {
   const { path } = useRouteMatch();
 
   return (
-    <HomeProvider homeKey="demo">
-      <EnvironmentProvider>
-        <Route path={`${path}/:name*`}>
-          <Document />
-        </Route>
-      </EnvironmentProvider>
-    </HomeProvider>
+    <FilesProvider fileSystem="web">
+      <HomeProvider homeKey="demo">
+        <EnvironmentProvider>
+          <Route path={`${path}/:name*`}>
+            <Document />
+          </Route>
+        </EnvironmentProvider>
+      </HomeProvider>
+    </FilesProvider>
   );
 };
 

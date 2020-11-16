@@ -1,31 +1,48 @@
-import React, { createContext, useMemo, useState, useEffect } from 'react';
-import FileSystem from '../files/FileSystem';
+import React, { createContext, useState, useMemo, useEffect } from 'react';
+import { useFileSystems } from '../hooks/filesystems';
+import FileSystem from '../types/FileSystem';
 
 interface FilesContextValue {
   fileSystem: FileSystem;
 }
 
+interface ProviderProps {
+  fileSystem: string;
+}
+
 const FilesContext = createContext<FilesContextValue>(undefined as any);
 
-const FilesProvider: React.FC = ({ children }) => {
+const FilesProvider: React.FC<ProviderProps> = ({ children, fileSystem }) => {
+  const fileSystems = useFileSystems();
   const [ready, setReady] = useState(false);
-  const fileSystem = useMemo(() => new FileSystem(), []);
+  const current = useMemo(() => fileSystems[fileSystem], [
+    fileSystem,
+    fileSystems,
+  ]);
 
   useEffect(() => {
+    if (!current) {
+      return;
+    }
     const run = async () => {
-      await fileSystem.setup();
+      await current.fs.setup();
       setReady(true);
     };
 
     run();
-  }, [fileSystem]);
 
-  if (!ready) {
+    return () => {
+      current.fs.teardown();
+    };
+  }, [current]);
+
+  if (!ready || !current) {
     return null;
   }
 
+
   return (
-    <FilesContext.Provider value={{ fileSystem }}>
+    <FilesContext.Provider value={{ fileSystem: current.fs }}>
       {children}
     </FilesContext.Provider>
   );

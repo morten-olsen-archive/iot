@@ -6,9 +6,10 @@ import i18n from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { ThemeProvider } from '@morten-olsen/iot-ui';
 import Router from './Router';
-import { FilesProvider } from './context/FilesContext';
+import { FileSystemsProvider } from './context/FileSystemsContext';
 import { ModelsProvider } from './context/ModelsContext';
 import { HomesProvider } from './context/HomesContext';
+
 
 const font = document.createElement('link');
 font.rel = 'stylesheet';
@@ -63,11 +64,11 @@ const App = () => (
     <ThemeProvider>
       <GlobalStyles />
       <ModelsProvider>
-        <FilesProvider>
+        <FileSystemsProvider>
           <HomesProvider>
             <Router />
           </HomesProvider>
-        </FilesProvider>
+        </FileSystemsProvider>
       </ModelsProvider>
     </ThemeProvider>
   </I18nextProvider>
