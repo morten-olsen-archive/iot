@@ -1,6 +1,6 @@
 {
   "name": "@morten-olsen/iot-socket-server",
-  "version": "1.0.0-alpha.25",
+  "version": "1.0.0-alpha.26",
   "main": "dist/index.js",
   "license": "MIT",
   "repository": {
@@ -8,7 +8,7 @@
     "url": "https://github.com/morten-olsen/iot"
   },
   "dependencies": {
-    "@morten-olsen/iot": "^1.0.0-alpha.25",
+    "@morten-olsen/iot": "^1.0.0-alpha.26",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {

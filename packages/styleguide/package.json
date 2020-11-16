@@ -1,6 +1,6 @@
 {
   "name": "@morten-olsen/iot-styleguide",
-  "version": "1.0.0-alpha.25",
+  "version": "1.0.0-alpha.26",
   "main": "index.js",
   "license": "MIT",
   "private": true,
