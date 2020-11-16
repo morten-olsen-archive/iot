@@ -29,7 +29,7 @@ class WorkerHost extends Unit {
     const { type, payload } = data;
 
     if (type === 'change') {
-      this.change(payload);
+      this.change(payload.changes, payload.options);
     }
   };
 

@@ -4,6 +4,7 @@ import * as multiplex from '@morten-olsen/iot-multiplex';
 import typescript from 'typescript';
 import TimeWarp from '@morten-olsen/timewarp';
 import path from 'path';
+import {ChangeRequestOptions} from '@morten-olsen/iot/dist/Api';
 
 interface SetupArgs {
   files: {
@@ -50,8 +51,8 @@ class WorkerUnit {
     run().catch(console.error);
   };
 
-  change = async (changes: ChangeRequest) => {
-    postMessage({ type: 'change', payload: changes }, undefined as any);
+  change = async (changes: ChangeRequest, options: ChangeRequestOptions) => {
+    postMessage({ type: 'change', payload: { changes, options } }, undefined as any);
   };
 
   onWarp = async (timeWarp: number) => {

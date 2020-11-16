@@ -1,4 +1,5 @@
 import Unit, { Changes, ChangeRequest } from '@morten-olsen/iot';
+import { ChangeRequestOptions } from '@morten-olsen/iot/dist/Api';
 
 interface Options {
   jwksUri?: string;
@@ -44,7 +45,10 @@ class Master extends Unit {
     this._nodeConfig = config;
   };
 
-  process = async (changeRequest: ChangeRequest) => {
+  process = async (
+    changeRequest: ChangeRequest,
+    changeOptions: ChangeRequestOptions
+  ) => {
     const changes: Changes = Object.entries(changeRequest)
       .filter(([key, value]) => this.store[key]?.current !== value)
       .reduce((output, [key, value]) => {
@@ -54,6 +58,7 @@ class Master extends Unit {
             ...output[key],
             changed: new Date().getTime(),
             current: value,
+            actor: changeOptions.actor,
             previous: this.store[key]?.current,
           },
         };
@@ -63,6 +68,9 @@ class Master extends Unit {
   };
 
   onChange = async (changes: Changes) => {
+    if (Object.keys(changes).length === 0) {
+      return;
+    }
     this._unit.handleChanges(changes);
   };
 }
