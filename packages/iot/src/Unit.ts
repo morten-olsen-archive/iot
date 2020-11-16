@@ -25,6 +25,10 @@ abstract class Unit {
     return this._jwt;
   }
 
+  get actor() {
+    return this._actor;
+  }
+
   setup = async (store: Store, api: Api, config?: UnitConfig) => {
     this._store = store;
     this._api = api;
@@ -59,7 +63,7 @@ abstract class Unit {
 
   protected getConfig = <T = any>() => {
     return this.api.getConfig<T>();
-  }
+  };
 
   protected setConfig = <T = any>(config: T) => this.api.setConfig(config);
 
@@ -79,6 +83,7 @@ abstract class Unit {
           current: value.current,
           previous: this.store[key] ? this.store[key].current : undefined,
           changed: new Date().getTime(),
+          actor: value.actor,
         },
       }),
       {}
@@ -89,7 +94,7 @@ abstract class Unit {
       ...newValues,
     };
 
-    const iql = (key: string) => new Iql(changes, [], key);
+    const iql = (key: string) => new Iql(changes, [], key, this._actor);
 
     this.onChange(changes, iql);
   };
@@ -104,7 +109,7 @@ abstract class Unit {
     options: ChangeRequestOptions = {}
   ) => {
     await this.api.setValues(changes, {
-      actor: this._actor,
+      actor: options.actor || this._actor,
       jwt: this._jwt,
       ...options,
     });
