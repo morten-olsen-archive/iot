@@ -26,7 +26,7 @@ const typings: { [name: string]: string } = {
   'morten-olsen__iot/Changes.d.ts': Changes,
   'morten-olsen__timewarp/index.d.ts': timewarp,
   'morten-olsen__timewarp/Timer.d.ts': Timer,
-  'morten-olsen__iot-multiplexer/index.d.ts': Timer,
+  'morten-olsen__iot-multiplex/index.d.ts': Multiplexer,
   'time/index.d.ts': time,
 };
 
