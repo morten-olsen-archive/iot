@@ -1,89 +1,73 @@
-import React, {
-  createContext,
-  useMemo,
-  ReactNode,
-  useCallback,
-  useState,
-} from 'react';
-import { nanoid } from 'nanoid';
+import React, { createContext, ReactNode, useCallback, useMemo } from 'react';
 import { useHomes } from '../hooks/homes';
 import Device from '../context/EnvironmentContext/Device';
 
-type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
-type CreateDevice = PartialBy<Omit<Device, 'home'>, 'key'>;
-
 interface HomeContextValue {
-  selectHome: (homeKey: string) => void;
-  homeKey: string;
-  name: string;
-  allowEdit: boolean;
-  devices: Device[];
-  setDevice: (device: CreateDevice) => Promise<void>;
-  removeDevice: (key: string) => Promise<void>;
+  home?: {
+    name: string;
+    devices: any[];
+    disableEdit?: boolean;
+  }
+  removeDevice: (baseKey: string) => void;
+  addDevice: (device: Device) => void;
 }
 
 interface ProviderProps {
-  homeKey: string;
+  selected?: string;
   children: ReactNode;
-  allowEdit?: boolean;
 }
 
-const noProvider = () => {
-  throw new Error('No provider');
-};
+const HomeContext = createContext<HomeContextValue>(undefined as any);
 
-const HomeContext = createContext<HomeContextValue>({
-  homeKey: '',
-  name: '',
-  allowEdit: false,
-  devices: [],
-  setDevice: noProvider,
-  removeDevice: noProvider,
-  selectHome: noProvider,
-});
-
-const HomeProvider: React.FC<ProviderProps> = ({
-  homeKey,
-  children,
-  allowEdit,
-}) => {
-  const [localHomeKey, setLocalHomeKey] = useState(homeKey);
-  const homes = useHomes();
-  const name = useMemo(() => homes.homes[localHomeKey], [
-    localHomeKey,
-    homes.homes,
+const HomeProvider: React.FC<ProviderProps> = ({ selected, children }) => {
+  const { homes } = useHomes();
+  const home = useMemo(() => (selected ? homes[selected] : undefined), [
+    selected,
+    homes,
   ]);
-  const devices = useMemo(
-    () => homes.devices.filter((d) => d.home === localHomeKey),
-    [localHomeKey, homes.devices]
+
+  const setHome = useCallback(
+    (newHome: any) => {
+      if (!home) {
+        return home;
+      }
+      home.model.setValue(JSON.stringify(newHome, null, '  '));
+    },
+    [home]
   );
 
-  const setDevice = useCallback(
-    async (device: CreateDevice) => {
-      await homes.setDevice({
-        key: nanoid(),
-        home: localHomeKey,
-        ...device,
+  const addDevice = useCallback(
+    (device: Device) => {
+      if (!home) {
+        return;
+      }
+      setHome({
+        ...home.data,
+        devices: [...home.data.devices, device],
       });
     },
-    [homes, localHomeKey]
+    [home, setHome]
   );
 
   const removeDevice = useCallback(
-    async (key: string) => homes.removeDevice(key),
-    [homes]
+    (baseKey: string) => {
+      if (!home) {
+        return;
+      }
+      setHome({
+        ...home.data,
+        devices: home.data.devices.filter((d: any) => d.baseKey !== baseKey),
+      });
+    },
+    [home, setHome]
   );
 
   return (
     <HomeContext.Provider
       value={{
-        homeKey,
-        name,
-        devices,
-        allowEdit: allowEdit ?? localHomeKey !== 'demo',
-        setDevice,
         removeDevice,
-        selectHome: setLocalHomeKey,
+        addDevice,
+        home: home?.data,
       }}
     >
       {children}

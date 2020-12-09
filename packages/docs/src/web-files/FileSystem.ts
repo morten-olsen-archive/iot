@@ -35,7 +35,7 @@ class WebFileSystem extends FileSystem {
   };
 
   public setupLayer0 = () => {
-    const context = (require as any).context('./src', true, /.ts$/);
+    const context = (require as any).context('./src', true, /.(ts|json)$/);
     this._layer0 = context.keys().reduce((output: Layer0Files, key: string) => {
       const content = context(key).default;
       const locationParts = key.substring(1).split('.');
@@ -64,6 +64,7 @@ class WebFileSystem extends FileSystem {
   public onSetup = async () => {
     this.setupLayer0();
     await this.setupLayer1();
+    await this.restoreFile('/homes/demo.home.json', '1');
   };
 }
 

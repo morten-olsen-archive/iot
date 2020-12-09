@@ -30,7 +30,7 @@ const DocumentRoute: React.FC = () => {
 
   return (
     <FilesProvider fileSystem="web">
-      <HomeProvider homeKey="demo">
+      <HomeProvider selected="/homes/demo.home.json">
         <EnvironmentProvider>
           <Route path={`${path}/:name*`}>
             <Document />

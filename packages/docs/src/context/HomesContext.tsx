@@ -1,79 +1,71 @@
-import { nanoid } from 'nanoid';
-import React, { createContext, useState, useEffect, useCallback } from 'react';
-import storage from '../db';
-import Device from './EnvironmentContext/Device';
-import demo from '../homes/demo';
+import React, { createContext, useState, useEffect } from 'react';
+import { editor } from 'monaco-editor/esm/vs/editor/editor.api';
 
 interface HomesContextValue {
-  devices: Device[];
   homes: {
-    [key: string]: string;
+    [location: string]: {
+      data: {
+        name: string;
+        devices: any[];
+      };
+      disableEdit?: boolean;
+      model: editor.ITextModel;
+    };
   };
-  setDevice: (device: Device) => Promise<void>;
-  removeDevice: (key: string) => Promise<void>;
-  addHome: (name: string) => Promise<string>;
-  removeHome: (key: string) => Promise<void>;
 }
 
-const HomesContext = createContext<HomesContextValue>(undefined as any);
+const HomesContext = createContext<HomesContextValue>({ homes: {} });
 
 const HomesProvider: React.FC = ({ children }) => {
   const [homes, setHomes] = useState<HomesContextValue['homes']>({});
-  const [devices, setDevices] = useState<Device[]>([]);
 
-  const update = async () => {
-    const newHomes = await storage.getHomes();
-    const newDevices = await storage.getDevices();
-
-    setHomes({
-      ...newHomes,
-      demo: 'Demo home',
-    });
-    setDevices([...newDevices, ...demo]);
+  const updateModel = (model: editor.ITextModel) => {
+    if (!model.uri.path.endsWith('.home.json')) {
+      return;
+    }
+    try {
+      setHomes((current) => ({
+        ...current,
+        [model.uri.path]: {
+          model,
+          data: JSON.parse(model.getValue() as any),
+        },
+      }));
+    } catch (err) {}
   };
 
-  const setDevice = useCallback(async (device: Device) => {
-    await storage.setDevice(device);
-    await update();
-  }, []);
-
-  const removeDevice = useCallback(async (key: string) => {
-    await storage.removeDevice(key);
-    await update();
-  }, []);
-
-  const addHome = useCallback(async (name: string) => {
-    const key = nanoid();
-    await storage.setHome(key, name);
-    await update();
-    return key;
-  }, []);
-
-  const removeHome = useCallback(async (key: string) => {
-    await storage.removeHome(key);
-    await update();
-  }, []);
-
   useEffect(() => {
-    update();
+    editor.getModels().forEach(updateModel);
+    let updateListener: undefined | any;
+    const createListener = editor.onDidCreateModel((model) => {
+      updateModel(model);
+      updateListener = model.onDidChangeContent(() => {
+        updateModel(model);
+      });
+    });
+
+    const disposeListener = editor.onWillDisposeModel((model) => {
+      setHomes((current) => {
+        const newList = { ...current };
+        delete newList[model.uri.path];
+        return newList;
+      });
+    });
+
+    return () => {
+      disposeListener.dispose();
+      createListener.dispose();
+      if (updateListener) {
+        updateListener.dispose();
+      }
+    };
   }, []);
 
   return (
-    <HomesContext.Provider
-      value={{
-        homes,
-        devices,
-        setDevice,
-        removeDevice,
-        addHome,
-        removeHome,
-      }}
-    >
-      {children}
-    </HomesContext.Provider>
+    <HomesContext.Provider value={{ homes }}>{children}</HomesContext.Provider>
   );
 };
 
-export { HomesProvider, HomesContextValue };
+export { HomesProvider };
 
 export default HomesContext;

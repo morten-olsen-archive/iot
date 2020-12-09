@@ -6,9 +6,9 @@ import Playground from '../components/Playground';
 
 const PlaygroundPage = () => (
   <FilesProvider fileSystem="web">
-    <HomeProvider homeKey="demo">
+    <HomeProvider selected="/homes/demo.home.json">
       <EnvironmentProvider>
-        <Playground cwd="/tutorial" />
+        <Playground cwd="/" />
       </EnvironmentProvider>
     </HomeProvider>
   </FilesProvider>

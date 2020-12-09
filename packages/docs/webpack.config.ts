@@ -28,7 +28,7 @@ const createWebpackConfig = () => {
     mode: dev ? 'development' : 'production',
     entry: [path.join(__dirname, 'src', 'index')],
     resolve: {
-      extensions: ['.tsx', '.ts', '.jsx', '.js'],
+      extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
       alias: {
         'react-dom': '@hot-loader/react-dom',
         'react-native': 'react-native-web',
@@ -71,9 +71,16 @@ const createWebpackConfig = () => {
           loader: 'file-loader',
         },
         {
-          test: /\.ts$/,
+          test: /\.(ts|json)$/,
           loader: 'raw-loader',
+          type: 'javascript/auto',
           include: [path.join(__dirname, 'src', 'web-files', 'src')],
+        },
+        {
+          test: /\.json$/,
+          loader: 'json-loader',
+          type: 'javascript/auto',
+          exclude: [path.join(__dirname, 'src', 'web-files', 'src')],
         },
         {
           test: /\.(j|t)sx?$/,

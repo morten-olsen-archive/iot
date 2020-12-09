@@ -5,7 +5,6 @@ import { useEnvironment } from '../../../hooks/environment';
 import { useHomes } from '../../../hooks/homes';
 import { useHome } from '../../../hooks/home';
 import AddDevice from './AddDevice';
-import ManageHomes from './ManageHomes';
 
 interface Props {
   onlyBaseKeys?: string[];
@@ -26,9 +25,8 @@ const RoomElements = styled.View`
 `;
 
 const Environment: React.FC<Props> = ({ onlyBaseKeys, showRooms }) => {
-  const { removeDevice } = useHomes();
-  const { allowEdit } = useHome();
   const { devices, deviceTypes } = useEnvironment();
+  const { removeDevice } = useHome();
   const preparedDevices = useMemo(
     () =>
       devices
@@ -39,7 +37,7 @@ const Environment: React.FC<Props> = ({ onlyBaseKeys, showRooms }) => {
             <type.component
               key={device.baseKey}
               room={device.room}
-              onRemove={allowEdit ? () => removeDevice(device.key) : undefined}
+              onRemove={() => removeDevice(device.baseKey)}
               channels={type.createChannels(device.baseKey)}
             />
           );
@@ -48,10 +46,8 @@ const Environment: React.FC<Props> = ({ onlyBaseKeys, showRooms }) => {
             [device.room]: [...(output[device.room] || []), element],
           };
         }, {} as { [room: string]: any }),
-    [devices, deviceTypes, onlyBaseKeys, removeDevice, allowEdit]
+    [devices, deviceTypes, onlyBaseKeys, removeDevice]
   );
-
-  console.log('allow edit', allowEdit);
 
   return (
     <Scroll>
@@ -69,7 +65,7 @@ const Environment: React.FC<Props> = ({ onlyBaseKeys, showRooms }) => {
           </RoomWrapper>
         ))}
       </Wrapper>
-      {allowEdit && <AddDevice />}
+      <AddDevice />
     </Scroll>
   );
 };

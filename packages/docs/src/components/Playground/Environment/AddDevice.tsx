@@ -27,7 +27,7 @@ const AddDevice: React.FC = () => {
 
   const onAdd = useCallback(
     (device: any) => {
-      home.setDevice(device);
+      home.addDevice(device);
       setVisible(false);
     },
     [home]

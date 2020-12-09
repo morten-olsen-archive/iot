@@ -15,7 +15,13 @@ class Iql {
   private _self?: string;
   private _negative = false;
 
-  constructor(changes: Changes, filters: Filter[], key: string, self?: string, negative: boolean = false) {
+  constructor(
+    changes: Changes,
+    filters: Filter[],
+    key: string,
+    self?: string,
+    negative: boolean = false
+  ) {
     this._key = key;
     this._changes = changes;
     this._filters = filters;
@@ -35,10 +41,10 @@ class Iql {
   clone = (params: CloneParams = {}) => {
     return new Iql(
       this._changes,
-      this._filters,
+      params.filters || this._filters,
       params.key ?? this._key,
       this._self,
-      params.negative ?? this._negative,
+      params.negative ?? this._negative
     );
   };
 
@@ -75,7 +81,8 @@ class Iql {
     const filters = [
       ...this._filters,
       () =>
-        this._changes[this._key] && (this._changes[this._key].previous === value) !== this._negative,
+        this._changes[this._key] &&
+        (this._changes[this._key].previous === value) !== this._negative,
     ];
     this._negative = false;
     return this.clone({ filters });
@@ -89,7 +96,8 @@ class Iql {
     const filters = [
       ...this._filters,
       () =>
-        this._changes[this._key] && (this._changes[this._key].actor === value) !== this._negative,
+        this._changes[this._key] &&
+        (this._changes[this._key].actor === value) !== this._negative,
     ];
     this._negative = false;
     return this.clone({ filters });

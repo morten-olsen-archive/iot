@@ -15,7 +15,7 @@ import Multiplex from '@morten-olsen/iot-multiplex';
 import DeviceType from './DeviceType';
 import Device from './Device';
 import WorkerHost from './WorkerHost';
-import { useDevices } from '../../hooks/home';
+import { useDevices, useHome } from '../../hooks/home';
 
 import hueLight from './deviceTypes/hueLight';
 import button from './deviceTypes/button';
@@ -53,7 +53,8 @@ const EnvironmentProvider: React.FC<ProviderProps> = ({ children }) => {
   const [ready, setReady] = useState(false);
   const [timeWarp, setTimeWarp] = useState(0);
   const [running, setRunning] = useState<string | undefined>(undefined);
-  const devices = useDevices();
+  const { home } = useHome();
+  const { devices = [] } = home || {};
   const [master, setMaster] = useState<Root | undefined>(undefined);
   const initialState = useMemo(
     () =>
@@ -68,7 +69,10 @@ const EnvironmentProvider: React.FC<ProviderProps> = ({ children }) => {
 
   const setup = useCallback(
     async (unit: Unit) => {
-      const multiplex = new Multiplex([unit, workerHost]);
+      const multiplex = new Multiplex({
+        unit,
+        workerHost,
+      });
       const initial = new Initial(multiplex, initialState);
       const newMaster = new Root(initial);
       await newMaster.initialize();
@@ -79,7 +83,7 @@ const EnvironmentProvider: React.FC<ProviderProps> = ({ children }) => {
   );
 
   useEffect(() => {
-    master?.process(initialState);
+    master?.process(initialState, { actor: 'Initial' });
   }, [master, initialState]);
 
   const compile = useCallback(
